@@ -2,10 +2,10 @@
 "use client";
 
 import { motion } from "framer-motion";
-import SmartSegmentationGraphic from "@/components/ui/SmartSegmentationGraphic";
-import DeliveryRetryGraphic from "@/components/ui/DeliveryRetryGraphic";
-import BuyingIntentGraphic from "@/components/ui/BuyingIntentGraphic";
-import ChannelOrbitGraphic from "@/components/ui/ChannelOrbitGraphic";
+import SmartSegmentationGraphic from "@/components/ui/home/SmartSegmentationGraphic";
+import DeliveryRetryGraphic from "@/components/ui/home/DeliveryRetryGraphic";
+import BuyingIntentGraphic from "@/components/ui/home/BuyingIntentGraphic";
+import ChannelOrbitGraphic from "@/components/ui/home/ChannelOrbitGraphic";
 import Reveal from "@/components/animations/Reveal";
 import RevealGroup, { revealItemVariants } from "@/components/animations/RevealGroup";
 
