@@ -72,8 +72,8 @@ export default function Hero() {
         <div className="lg:col-span-7 text-white flex flex-col items-start gap-4">
           <Reveal className="w-full">
             <h1 className="text-4xl sm:text-5xl lg:text-[56px] font-semibold leading-tight tracking-tight m-0 p-0">
-              AI Agents for <br />
-              Ecommerce Businesses
+             AI Agents for <br />
+             Ecommerce Businesses
             </h1>
           </Reveal>
 

@@ -3,14 +3,7 @@
 
 import { useRef, useState, useEffect } from "react";
 import Image from "next/image";
-import {
-  motion,
-  AnimatePresence,
-  useScroll,
-  useTransform,
-  useMotionValueEvent,
-  type Variants,
-} from "framer-motion";
+import { motion, AnimatePresence, type Variants } from "framer-motion";
 import {
   ArrowRight,
   Headphones,
@@ -426,24 +419,29 @@ function MobileAgentGraphic({ tab }: { tab: number }) {
   return <MobileGrowthAgentGraphic />;
 }
 
+// ---------------------------------------------------------------------------
+// DESKTOP SCROLL-LOCK CONFIG
+// ---------------------------------------------------------------------------
+const WHEEL_THRESHOLD = 45; // accumulated deltaY needed to trigger a tab step
+const ANIMATION_LOCK_MS = 900; // roughly matches the card entrance animation duration
+const LAST_TAB = agentsData.length - 1;
+
 export default function AgentsSection() {
   const targetRef = useRef<HTMLDivElement>(null);
   const cardRef = useRef<HTMLDivElement>(null);
   const [activeTab, setActiveTab] = useState(0);
   const [cardHeight, setCardHeight] = useState(0);
 
-  // Used to gate the mobile tabs/block AND to control whether the whole
-  // section behaves as a scroll-jacked sticky panel (desktop) or a normal,
-  // regular-height flowing block (mobile). The desktop block's own inner
-  // JSX, classes, and animation logic are completely unchanged.
   const [isDesktop, setIsDesktop] = useState<boolean>(() =>
     typeof window !== "undefined" ? window.matchMedia("(min-width: 1024px)").matches : false
   );
 
+  // Whether the section is currently pinned (position: fixed) to the viewport
+  // while its inner tab animation plays out. Desktop only.
+  const [isPinned, setIsPinned] = useState(false);
+
   useEffect(() => {
     const mq = window.matchMedia("(min-width: 1024px)");
-    // eslint-disable-next-line react-hooks/set-state-in-effect
-    setIsDesktop(mq.matches);
     const handler = (e: MediaQueryListEvent) => setIsDesktop(e.matches);
     mq.addEventListener("change", handler);
     return () => mq.removeEventListener("change", handler);
@@ -455,45 +453,149 @@ export default function AgentsSection() {
     }
   }, [activeTab]);
 
-  const { scrollYProgress } = useScroll({
-    target: targetRef,
-    offset: ["start start", "end end"],
-  });
+  // ---------------------------------------------------------------------
+  // Desktop-only scroll lock. When the section's top edge reaches the top
+  // of the viewport while scrolling down, the section is pinned in place
+  // (position: fixed) and page scrolling is frozen. Each wheel "tick"
+  // advances or retreats exactly one tab; a cooldown blocks the next tick
+  // until the current tab's entrance animation has actually finished
+  // playing. Once the last tab (Growth Agent) has played and the user
+  // scrolls further, the section unpins and the page scrolls on past it
+  // normally. Scrolling back up into a fully-played section re-pins and
+  // replays it in reverse.
+  // ---------------------------------------------------------------------
+  const activeTabRef = useRef(activeTab);
+  useEffect(() => {
+    activeTabRef.current = activeTab;
+  }, [activeTab]);
 
-  const mappedIndex = useTransform(
-    scrollYProgress,
-    [0, 0.33, 0.66, 1],
-    [0, 0, 1, 2]
-  );
+  const isLockedRef = useRef(false);
+  const isAnimatingRef = useRef(false);
+  const hasCompletedRef = useRef(false);
+  const wheelAccumRef = useRef(0);
 
-  useMotionValueEvent(mappedIndex, "change", (latest) => {
-    // Scroll-driven tab switching stays desktop-only. Mobile is tap-only,
-    // handled separately in the mobile block below.
-    if (!isDesktop) return;
-    const rounded = Math.round(latest);
-    if (rounded !== activeTab) {
-      setActiveTab(rounded);
+  useEffect(() => {
+    if (!isDesktop) {
+      // Only reset if there was actually something locked/pinned to reset —
+      // avoids calling setState unconditionally on every effect run.
+      if (isLockedRef.current) {
+        document.body.style.overflow = "";
+        isLockedRef.current = false;
+        setIsPinned(false);
+      }
+      return;
     }
-  });
+
+    const section = targetRef.current;
+    if (!section) return;
+
+    const lockScroll = () => {
+      if (isLockedRef.current) return;
+      isLockedRef.current = true;
+      document.body.style.overflow = "hidden";
+      setIsPinned(true);
+    };
+    const unlockScroll = () => {
+      if (!isLockedRef.current) return;
+      isLockedRef.current = false;
+      document.body.style.overflow = "";
+      setIsPinned(false);
+    };
+
+    const stepTo = (nextTab: number) => {
+      isAnimatingRef.current = true;
+      setActiveTab(nextTab);
+      window.setTimeout(() => {
+        isAnimatingRef.current = false;
+      }, ANIMATION_LOCK_MS);
+    };
+
+    const advance = (dir: 1 | -1) => {
+      const current = activeTabRef.current;
+
+      if (dir === 1) {
+        if (current < LAST_TAB) {
+          stepTo(current + 1);
+        } else {
+          hasCompletedRef.current = true;
+          unlockScroll();
+        }
+      } else {
+        if (current > 0) {
+          stepTo(current - 1);
+        } else {
+          unlockScroll();
+        }
+      }
+    };
+
+    const onWheel = (e: WheelEvent) => {
+      const rect = section.getBoundingClientRect();
+      const overlapsTop = rect.top <= 0 && rect.bottom > 0;
+
+      if (!isLockedRef.current) {
+        if (!overlapsTop) return; // section isn't at the top edge — let the page scroll normally
+
+        if (hasCompletedRef.current) {
+          // Already fully played through. Only re-engage if the user is
+          // scrolling back UP into it.
+          if (e.deltaY < 0) {
+            hasCompletedRef.current = false;
+            activeTabRef.current = LAST_TAB;
+            setActiveTab(LAST_TAB);
+            lockScroll();
+          } else {
+            return; // scrolling further down, past a finished section — let it go
+          }
+        } else {
+          if (e.deltaY > 0) {
+            lockScroll();
+          } else {
+            return; // scrolling up away from a not-yet-started section — let it go
+          }
+        }
+      }
+
+      // Locked: consume the scroll, keep the page from moving.
+      e.preventDefault();
+      if (isAnimatingRef.current) return;
+
+      wheelAccumRef.current += e.deltaY;
+
+      if (wheelAccumRef.current > WHEEL_THRESHOLD) {
+        wheelAccumRef.current = 0;
+        advance(1);
+      } else if (wheelAccumRef.current < -WHEEL_THRESHOLD) {
+        wheelAccumRef.current = 0;
+        advance(-1);
+      }
+    };
+
+    window.addEventListener("wheel", onWheel, { passive: false });
+    return () => {
+      window.removeEventListener("wheel", onWheel);
+      document.body.style.overflow = "";
+    };
+  }, [isDesktop]);
 
   const activeAgent = agentsData[activeTab];
   const IconComponent = activeAgent.icon;
 
   return (
+    // Outer wrapper: on desktop this always reserves a full-viewport-height
+    // slot in the document flow (min-h-screen), regardless of whether the
+    // inner content below is currently `relative` or pinned `fixed`. That's
+    // what prevents any layout jump when pinning/unpinning.
     <div
       ref={targetRef}
-      className={`relative bg-black text-white rounded-[1.5rem] ${
-        isDesktop ? "h-[400vh]" : "h-auto"
-      }`}
+      className={`relative bg-black text-white rounded-[1.5rem] ${isDesktop ? "min-h-screen" : ""}`}
     >
-      {/* Sticky viewport lock — desktop only. On mobile this is a normal,
-          non-sticky, non-scroll-jacked static block. */}
       <div
         className={`flex flex-col items-center px-6 overflow-hidden ${
-          isDesktop
-            ? "sticky top-0 min-h-screen justify-center py-12"
-            : "relative justify-start py-10"
-        }`}
+          isDesktop && isPinned
+            ? "fixed inset-0 z-[100] bg-black"
+            : "relative rounded-[1.5rem] bg-black"
+        } ${isDesktop ? "min-h-screen justify-center py-12" : "justify-start py-10"}`}
       >
         {/* Background Backdrop */}
         <div className="absolute inset-x-0 bottom-0 h-[70%] z-0 pointer-events-none overflow-hidden">
@@ -531,7 +633,7 @@ export default function AgentsSection() {
             Give your customers the right AI agent to resolve their issues. Drive instant product recommendations with the Shopping Assistant, automate 24/7 support with the Customer Service Agent, and re-engage lapsed buyers with the Growth Agent.
           </p>
 
-          {/* =============================== DESKTOP (lg+) — UNCHANGED =============================== */}
+          {/* =============================== DESKTOP (lg+) =============================== */}
           <div className="hidden lg:flex flex-col items-center w-full">
             {/* Tabs */}
             <div className="flex items-center gap-1.5 bg-[#18181b]/90 border border-white/15 p-1.5 rounded-full mb-6 relative backdrop-blur-xl shadow-2xl max-w-full overflow-x-auto no-scrollbar">
@@ -585,8 +687,7 @@ export default function AgentsSection() {
                     transition={{ duration: 0.4, ease: [0.25, 0.1, 0.25, 1.0] }}
                     className="grid grid-cols-1 md:grid-cols-12 gap-6 items-center w-full"
                   >
-                    {/* Left Column Text Content — appears BELOW the graphic on mobile
-                        (order-2), and to the LEFT of the graphic on desktop (md:order-1) */}
+                    {/* Left Column Text Content */}
                     <div className="order-2 md:order-1 md:col-span-6 space-y-4">
                       <div className="flex items-center gap-3">
                         <div className="w-10 h-10 rounded-full bg-[#FF5E2C] flex items-center justify-center text-white shadow-lg shadow-orange-500/30 shrink-0">
@@ -621,20 +722,19 @@ export default function AgentsSection() {
                       <div className="pt-2">
                        <button className="group relative inline-flex items-center gap-4 bg-gradient-to-b from-[#FF7235] via-[#FF5312] to-[#FF3D00] text-white text-[12px] font-normal pl-4 pr-1 py-1 rounded-full hover:brightness-105 active:scale-[0.98] transition-all duration-300">
   <span className="tracking-tight">Explore More</span>
-  
+
   {/* Circular Arrow Badge */}
   <div className="relative z-10 w-8 h-8 rounded-full flex items-center justify-center bg-gradient-to-br from-white/30 via-transparent to-black/20 overflow-hidden">
     {/* Inner subtle glow overlay */}
     <div className="absolute inset-[1px] rounded-full bg-gradient-to-b from-[#FF632A] to-[#FF4500] opacity-90" />
-    
+
     <ArrowRight className="w-4 h-4 text-white stroke-[2.5] relative z-10" />
   </div>
 </button>
                       </div>
                     </div>
 
-                    {/* Right Column Interactive Motion Graphics Container — appears ABOVE
-                        the text on mobile (order-1), and to the RIGHT on desktop (md:order-2) */}
+                    {/* Right Column Interactive Motion Graphics Container */}
                     <div className="order-1 md:order-2 md:col-span-6 bg-[#FFF4EF] border border-orange-100/80 rounded-3xl p-3 sm:p-6 flex flex-col justify-center items-center relative overflow-hidden min-h-[300px] sm:min-h-[340px] md:min-h-[380px]">
                       {/* 01. CUSTOMER SERVICE AGENT MOTION GRAPHIC */}
                       {activeTab === 0 && (
@@ -915,8 +1015,7 @@ export default function AgentsSection() {
                 </AnimatePresence>
               </motion.div>
 
-              {/* Right Vertical Timeline Stick Indicators — desktop only (unchanged);
-                  already hidden below lg, so no vertical line appears on mobile. */}
+              {/* Right Vertical Timeline Stick Indicators */}
               <div
                 className="hidden lg:flex flex-col gap-0 justify-between items-center"
                 style={{ height: `${cardHeight}px` }}
@@ -939,9 +1038,6 @@ export default function AgentsSection() {
 
           {/* =============================== MOBILE / TABLET (below lg) =============================== */}
           <div className="lg:hidden w-full flex flex-col items-center gap-4">
-            {/* Vertical tab list — single dark container background, plain text tabs,
-                only the active tab gets its own orange-bordered pill (matching the
-                reference image). Tap only, no scroll-driven switching. */}
             <div className="flex flex-col items-stretch gap-1 w-full max-w-[280px] bg-[#18181b]/90 border border-white/10 rounded-3xl p-3 shadow-2xl backdrop-blur-xl">
               {agentsData.map((agent, index) => {
                 const isActive = activeTab === index;
@@ -961,7 +1057,6 @@ export default function AgentsSection() {
               })}
             </div>
 
-            {/* Card: graphic above, text below — sits below the tabs, full width */}
             <div className="w-full bg-white text-gray-900 rounded-[1.25rem] p-4 sm:p-5 shadow-2xl border border-gray-100 overflow-hidden">
               <AnimatePresence mode="wait">
                 <motion.div
@@ -972,14 +1067,12 @@ export default function AgentsSection() {
                   transition={{ duration: 0.35, ease: "easeOut" }}
                   className="flex flex-col gap-6"
                 >
-                  {/* Graphic — scaled uniformly to fit, never stretched, always centered */}
                   <div className="w-full bg-[#FFF4EF] border border-orange-100/80 rounded-2xl p-3 flex items-center justify-center overflow-hidden">
                     <ScaleToFit designWidth={360}>
                       <MobileAgentGraphic tab={activeTab} />
                     </ScaleToFit>
                   </div>
 
-                  {/* Text content */}
                   <div className="space-y-3">
                     <div className="flex items-center gap-3">
                       <div className="w-9 h-9 rounded-full bg-[#FF5E2C] flex items-center justify-center text-white shadow-lg shadow-orange-500/30 shrink-0">
@@ -1002,14 +1095,10 @@ export default function AgentsSection() {
                       ))}
                     </div>
 
-                   <button className="group relative inline-flex items-center gap-4 bg-gradient-to-b from-[#FF7235] via-[#FF5312] to-[#FF3D00] text-white text-[12px] font-normal pl-4 pr-1 py-1 rounded-full hover:brightness-105 active:scale-[0.98] transition-all duration-300">
+                   <button className="group relative inline-flex items-center gap-4 bg-gradient-to-b from-[#FF7235] via-[#FF5312] to-[#FF3D00] text-white text-[12px] font-normal pl-4 pr-1 py-0.5 rounded-full hover:brightness-105 active:scale-[0.98] transition-all duration-300">
   <span className="tracking-tight">Explore More</span>
-  
-  {/* Circular Arrow Badge */}
-  <div className="relative z-10 w-9 h-9 rounded-full flex items-center justify-center bg-gradient-to-br from-white/30 via-transparent to-black/20 overflow-hidden">
-    {/* Inner subtle glow overlay */}
+  <div className="relative z-10 w-8 h-8 rounded-full flex items-center justify-center bg-gradient-to-br from-white/30 via-transparent to-black/20 overflow-hidden">
     <div className="absolute inset-[1px] rounded-full bg-gradient-to-b from-[#FF632A] to-[#FF4500] opacity-90" />
-    
     <ArrowRight className="w-4 h-4 text-white stroke-[2.5] relative z-10" />
   </div>
 </button>

@@ -38,7 +38,7 @@ export default function Footer() {
           {/* CTA Button */}
           <Link
             href="#demo"
-            className="relative group inline-flex items-center gap-3 bg-gradient-to-b from-[#FF7B40] via-[#FF551D] to-[#FF4500] text-white text-[13px] font-normal px-4 sm:px-6 py-1 sm:py-2 rounded-full hover:brightness-105 active:scale-95 transition-all overflow-hidden border border-white/20"
+            className="relative group inline-flex items-center gap-3 bg-gradient-to-b from-[#FF7B40] via-[#FF551D] to-[#FF4500] text-white text-[12px] font-normal px-4 sm:px-4 py-1 sm:py-1 rounded-full hover:brightness-105 active:scale-95 transition-all overflow-hidden border border-white/20"
           >
             {/* Top Edge Inner Light Highlight */}
             <div className="absolute top-0 inset-x-0 h-[1.5px] bg-gradient-to-r from-transparent via-white/40 to-transparent" />
@@ -55,10 +55,11 @@ export default function Footer() {
 
         {/* White Floating Navigation Card */}
         <div className="bg-white text-gray-900 rounded-3xl p-6 sm:p-10 md:p-12 shadow-2xl">
-          {/* 4-Column Footer Content Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-8 md:gap-10 items-start mb-8 sm:mb-10 text-left">
-            {/* Column 1: Brand Logo & Tagline */}
-            <div className="flex flex-col items-start text-left">
+          {/* 5-Column Grid Layout (Col 1 takes 2 fractions, remaining 3 columns take 1 each) */}
+          <div className="grid grid-cols-1 md:grid-cols-5 gap-8 md:gap-10 items-start mb-8 sm:mb-10 text-left">
+            
+            {/* Column 1: Brand Logo & Tagline (Wider) */}
+            <div className="md:col-span-2 flex flex-col items-start text-left">
               <Link href="/" className="inline-block mb-4">
                 <Image
                   src="/icons/exeiLogo-black.png"
@@ -71,7 +72,7 @@ export default function Footer() {
               </Link>
 
               <p className="text-black text-sm font-medium max-w-xl">
-                The Moment a Customer Decides — Exei Doesn&apos;t Miss It.
+                Purpose-built AI agents for modern ecommerce.
               </p>
             </div>
 
@@ -85,7 +86,7 @@ export default function Footer() {
                 <ul className="space-y-2.5 font-medium text-gray-700 text-xs sm:text-sm">
                   <li>
                     <Link
-                      href="#shopping-assistant"
+                      href="/shopping-assistant/"
                       className="hover:text-[#FF5E2C] transition-colors"
                     >
                       Shopping Assistant
@@ -93,7 +94,7 @@ export default function Footer() {
                   </li>
                   <li>
                     <Link
-                      href="#growth-agent"
+                      href="/growth-agent/"
                       className="hover:text-[#FF5E2C] transition-colors"
                     >
                       Growth Agent
@@ -101,7 +102,7 @@ export default function Footer() {
                   </li>
                   <li>
                     <Link
-                      href="#customer-service-agent"
+                      href="/customer-service/"
                       className="hover:text-[#FF5E2C] transition-colors"
                     >
                       Customer Service Agent
@@ -118,7 +119,7 @@ export default function Footer() {
                 <ul className="space-y-2.5 font-medium text-gray-700 text-xs sm:text-sm">
                   <li>
                     <Link
-                      href="#whatsapp-agent"
+                      href="/whatsapp-ai-agent/"
                       className="hover:text-[#FF5E2C] transition-colors"
                     >
                       WhatsApp AI Agent
@@ -126,7 +127,7 @@ export default function Footer() {
                   </li>
                   <li>
                     <Link
-                      href="#shopify-agent"
+                      href="/shopify-ai-agent/"
                       className="hover:text-[#FF5E2C] transition-colors"
                     >
                       Shopify AI Agent
@@ -134,7 +135,7 @@ export default function Footer() {
                   </li>
                   <li>
                     <Link
-                      href="#voice-agent"
+                      href="/ai-voice-agent/"
                       className="hover:text-[#FF5E2C] transition-colors"
                     >
                       Voice AI Agent
@@ -142,7 +143,7 @@ export default function Footer() {
                   </li>
                   <li>
                     <Link
-                      href="#instagram-agent"
+                      href="/instagram-ai-agent/"
                       className="hover:text-[#FF5E2C] transition-colors"
                     >
                       Instagram AI Agent
@@ -150,7 +151,7 @@ export default function Footer() {
                   </li>
                   <li>
                     <Link
-                      href="#website-agent"
+                      href="/website-ai-agent/"
                       className="hover:text-[#FF5E2C] transition-colors"
                     >
                       Website AI Agent
@@ -158,7 +159,7 @@ export default function Footer() {
                   </li>
                   <li>
                     <Link
-                      href="#messenger-agent"
+                      href="/messenger-ai-agent/"
                       className="hover:text-[#FF5E2C] transition-colors"
                     >
                       Messenger AI Agent
@@ -178,26 +179,26 @@ export default function Footer() {
                 <ul className="space-y-2.5 font-medium text-gray-700 text-xs sm:text-sm">
                   <li>
                     <Link
-                      href="#whatsapp-broadcast"
+                      href="/whatsapp-broadcast/"
                       className="hover:text-[#FF5E2C] transition-colors"
                     >
-                      Whatsapp Broadcast
+                      WhatsApp Broadcast
                     </Link>
                   </li>
                   <li>
                     <Link
-                      href="#whatsapp-bulk"
+                      href="/whatsapp-bulk-messages/"
                       className="hover:text-[#FF5E2C] transition-colors"
                     >
-                      Whatsapp Bulk Messages
+                      WhatsApp Bulk Messages
                     </Link>
                   </li>
                   <li>
                     <Link
-                      href="#whatsapp-automation"
+                      href="/whatsapp-automation/"
                       className="hover:text-[#FF5E2C] transition-colors"
                     >
-                      Whatsapp Automation
+                      WhatsApp Automation
                     </Link>
                   </li>
                 </ul>
@@ -280,7 +281,7 @@ export default function Footer() {
                 <ul className="space-y-2.5 font-medium text-gray-700 text-xs sm:text-sm">
                   <li>
                     <Link
-                      href="/privacy-policy"
+                      href="/privacy-policy/"
                       className="hover:text-[#FF5E2C] transition-colors"
                     >
                       Privacy Policy
@@ -288,7 +289,7 @@ export default function Footer() {
                   </li>
                   <li>
                     <Link
-                      href="/terms"
+                      href="/terms/"
                       className="hover:text-[#FF5E2C] transition-colors"
                     >
                       Terms & Condition
@@ -301,8 +302,9 @@ export default function Footer() {
 
           {/* Bottom Copyright & Custom Clickable Social Icons */}
           <div className="pt-6 sm:pt-8 border-t border-gray-100 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs font-medium text-gray-500 text-left">
-            <p>Copyright © 2026 Exei – AI Agents for eCommerce powered by Xcelore | All Rights Reserved
-</p>
+            <p>
+              Copyright © 2026 Exei – AI Agents for eCommerce powered by Xcelore | All Rights Reserved
+            </p>
 
             {/* Clickable Custom Social Media Icons */}
             <div className="flex items-center justify-start gap-5">

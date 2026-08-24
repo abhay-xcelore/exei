@@ -1,7 +1,7 @@
 // app/page.tsx
 "use client";
 
-import Navbar from "@/components/layout/Navbar";
+import Navbar from "@/components/layout/DarkNavbar";
 import Hero from "@/components/sections/home/Hero";
 import LogoMarquee from "@/components/sections/home/LogoMarquee";
 import OverviewSection from "@/components/sections/home/OverviewSection";

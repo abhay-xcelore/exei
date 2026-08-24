@@ -25,7 +25,7 @@ export default function OverviewSection() {
   <div className="absolute top-0 inset-x-8 h-[2px] bg-gradient-to-r from-transparent via-[#F56E35] to-transparent z-20 opacity-90 blur-[0.5px]" />
 
   {/* Figma Linear Gradient Fill: Pure white at top transitioning to #F56E35 orange tint & soft gray at bottom */}
-  <div className="relative z-10 bg-gradient-to-b from-white via-white/80 to-[#F56E35]/20 shadow-[0_4px_20px_rgba(245,110,53,0.12)] rounded-full px-4 sm:px-6 py-0.5 sm:py-1.5 border border-white/60">
+  <div className="relative z-10 bg-gradient-to-b from-white via-white/80 to-[#F56E35]/20 rounded-full px-4 sm:px-6 py-0.5 sm:py-1.5 border border-white/60">
     {/* Additional subtle grey/60 (10%) inner wash at the bottom */}
     <div className="absolute inset-0 rounded-full bg-gradient-to-t from-[#999999]/10 to-transparent pointer-events-none" />
 

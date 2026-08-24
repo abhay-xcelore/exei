@@ -78,9 +78,9 @@ export default function ChallengesSection() {
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true, margin: "-50px" }}
                   transition={{ duration: 0.5, delay: idx * 0.1 }}
-                  className="bg-white border border-gray-100/80 rounded-3xl p-8 flex flex-col items-center text-center shadow-[0_2px_10px_rgba(0,0,0,0.02)] hover:shadow-md transition-shadow flex-1 justify-center space-y-3"
+                  className="bg-white border border-gray-100/80 rounded-3xl p-8 flex flex-col items-center text-center shadow-[0_2px_10px_rgba(0,0,0,0.02)] transition-shadow flex-1 justify-center space-y-3"
                 >
-                  <div className="w-12 h-12 rounded-full bg-gradient-to-r from-[#FF5E2C] to-[#FF7A28] text-white flex items-center justify-center shadow-md shadow-orange-500/25 mb-1">
+                  <div className="w-12 h-12 rounded-full bg-gradient-to-r from-[#FF5E2C] to-[#FF7A28] text-white flex items-center justify-center mb-3">
                     <Icon className="w-5 h-5 stroke-[2]" />
                   </div>
                   <h3 className="text-lg font-medium text-gray-900">{item.title}</h3>
@@ -101,10 +101,10 @@ export default function ChallengesSection() {
             className="hidden lg:block lg:col-span-4 relative rounded-3xl overflow-hidden min-h-[380px] lg:min-h-full border border-gray-100 shadow-[0_2px_10px_rgba(0,0,0,0.02)]"
           >
             <Image
-              src="/images/advantage.png"
+              src="/images/challenge.png"
               alt="Ecommerce Challenge Solution"
               fill
-              className="object-cover"
+              className="object-cover object-bottom"
               priority
             />
           </motion.div>
@@ -120,9 +120,9 @@ export default function ChallengesSection() {
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true, margin: "-50px" }}
                   transition={{ duration: 0.5, delay: idx * 0.1 + 0.2 }}
-                  className="bg-white border border-gray-100/80 rounded-3xl p-8 flex flex-col items-center text-center shadow-[0_2px_10px_rgba(0,0,0,0.02)] hover:shadow-md transition-shadow flex-1 justify-center space-y-3"
+                  className="bg-white border border-gray-100/80 rounded-3xl p-8 flex flex-col items-center text-center shadow-[0_2px_10px_rgba(0,0,0,0.02)] transition-shadow flex-1 justify-center space-y-3"
                 >
-                  <div className="w-12 h-12 rounded-full bg-gradient-to-r from-[#FF5E2C] to-[#FF7A28] text-white flex items-center justify-center shadow-md shadow-orange-500/25 mb-1">
+                  <div className="w-12 h-12 rounded-full bg-gradient-to-r from-[#FF5E2C] to-[#FF7A28] text-white flex items-center justify-center mb-3">
                     <Icon className="w-5 h-5 stroke-[2]" />
                   </div>
                   <h3 className="text-lg font-medium text-gray-900">{item.title}</h3>

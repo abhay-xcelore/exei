@@ -5,11 +5,11 @@ import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
-import { ArrowRight, Menu, X } from "lucide-react";
+import { ArrowRight, Menu, X, ChevronDown } from "lucide-react";
 
 const navLinks = [
-  { label: "Products", href: "#products" },
-  { label: "Channels", href: "#channels" },
+  { label: "Products", href: "#products", hasDropdown: true },
+  { label: "Channels", href: "#channels", hasDropdown: true },
   { label: "Resources", href: "#resources" },
   { label: "Pricing", href: "#pricing" },
   { label: "About Us", href: "#about-us" },
@@ -37,8 +37,6 @@ export default function Navbar() {
         setScrolled(true);
       } else if (scrollingDown) {
         setHidden(true);
-        // Close the mobile menu if it happens to be open while scrolling
-        // the header away, so it doesn't linger detached off-screen.
         setMobileOpen(false);
       }
 
@@ -57,7 +55,7 @@ export default function Navbar() {
         scrolled ? "py-3" : "py-5"
       }`}
     >
-      {/* Single persisting row — logo, links, and CTA never remount between states. */}
+      {/* Persisting row */}
       <motion.div
         layout
         transition={{ duration: 0.45, ease: [0.25, 0.1, 0.25, 1] }}
@@ -68,7 +66,7 @@ export default function Navbar() {
         }`}
       >
         {/* Brand Logo */}
-        <Link href="/" className="flex items-center shrink-0">
+        <Link href="/" className="flex items-center shrink-0 cursor-pointer">
           <Image
             src="/icons/exeiLogo.png"
             alt="Exei Logo"
@@ -79,7 +77,7 @@ export default function Navbar() {
           />
         </Link>
 
-        {/* Center Menu — desktop only, unchanged */}
+        {/* Center Menu */}
         <nav
           style={{
             backdropFilter: scrolled ? "none" : "blur(23.4px)",
@@ -95,37 +93,37 @@ export default function Navbar() {
             <Link
               key={link.label}
               href={link.href}
-              className="text-sm sm:text-base font-normal text-gray-200 hover:text-white transition-colors tracking-wide whitespace-nowrap"
+              className="group flex items-center gap-1.5 text-sm sm:text-base font-normal text-gray-200 hover:text-white transition-colors tracking-wide whitespace-nowrap cursor-pointer"
             >
-              {link.label}
+              <span>{link.label}</span>
+              {link.hasDropdown && (
+                <ChevronDown className="w-3.5 h-3.5 text-gray-300 transition-transform duration-200 group-hover:translate-y-0.5" />
+              )}
             </Link>
           ))}
         </nav>
 
-        {/* Right side: CTA always visible, hamburger only on mobile */}
+        {/* Right side CTA & Mobile Menu */}
         <div className="flex items-center gap-2 sm:gap-3 shrink-0">
           <Link
             href="#explore"
-            className="relative group inline-flex items-center gap-3 bg-gradient-to-b from-[#FF814C] to-[#FF4C00] text-white text-[12px] font-normal pl-4 pr-1 py-1 rounded-full hover:brightness-105 active:scale-95 transition-all overflow-hidden"
+            className="relative group inline-flex items-center gap-3 bg-gradient-to-b from-[#FF814C] to-[#FF4C00] text-white text-[12px] font-normal pl-4 pr-1 py-1 rounded-full hover:brightness-105 active:scale-95 transition-all overflow-hidden cursor-pointer"
           >
-            {/* Top Edge Subtle Light Reflection */}
             <div className="absolute top-0 inset-x-0 h-[1.5px] bg-gradient-to-r from-transparent via-white/40 to-transparent pointer-events-none" />
 
-            {/* Button Text */}
             <span className="relative z-10">Explore More</span>
 
-            {/* Glossy Arrow Icon Circle */}
             <div className="relative z-10 w-7 h-7 rounded-full bg-white/15 border border-white/35 flex items-center justify-center shadow-inner backdrop-blur-xs group-hover:translate-x-0.5 transition-transform">
               <ArrowRight className="w-3.5 h-3.5 text-white stroke-[2.5]" />
             </div>
           </Link>
 
-          {/* Hamburger — mobile only */}
+          {/* Hamburger (Mobile) */}
           <button
             onClick={() => setMobileOpen((prev) => !prev)}
             aria-label={mobileOpen ? "Close menu" : "Open menu"}
             aria-expanded={mobileOpen}
-            className="md:hidden relative w-9 h-9 rounded-full bg-white/10 border border-white/15 flex items-center justify-center text-white shrink-0"
+            className="md:hidden relative w-9 h-9 rounded-full bg-white/10 border border-white/15 flex items-center justify-center text-white shrink-0 cursor-pointer"
           >
             <AnimatePresence mode="wait" initial={false}>
               {mobileOpen ? (
@@ -156,8 +154,7 @@ export default function Navbar() {
         </div>
       </motion.div>
 
-      {/* Mobile dropdown panel — sits below the pill, appears/disappears with a
-          smooth height+opacity+scale reveal. Desktop never renders this. */}
+      {/* Mobile Dropdown Panel */}
       <AnimatePresence>
         {mobileOpen && (
           <motion.div
@@ -173,14 +170,21 @@ export default function Navbar() {
                   key={link.label}
                   initial={{ opacity: 0, x: -8 }}
                   animate={{ opacity: 1, x: 0 }}
-                  transition={{ duration: 0.25, delay: 0.05 + i * 0.05, ease: "easeOut" }}
+                  transition={{
+                    duration: 0.25,
+                    delay: 0.05 + i * 0.05,
+                    ease: "easeOut",
+                  }}
                 >
                   <Link
                     href={link.href}
                     onClick={() => setMobileOpen(false)}
-                    className="block px-4 py-3 rounded-2xl text-base font-medium text-gray-200 hover:text-white hover:bg-white/5 transition-colors"
+                    className="flex items-center justify-between px-4 py-3 rounded-2xl text-base font-medium text-gray-200 hover:text-white hover:bg-white/5 transition-colors cursor-pointer"
                   >
-                    {link.label}
+                    <span>{link.label}</span>
+                    {link.hasDropdown && (
+                      <ChevronDown className="w-4 h-4 text-gray-400" />
+                    )}
                   </Link>
                 </motion.div>
               ))}
