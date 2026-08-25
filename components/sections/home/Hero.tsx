@@ -37,6 +37,11 @@ export default function Hero() {
     return () => clearInterval(interval);
   }, []);
 
+  // Which message index (1, 2, or 3) is the most recently revealed one.
+  // Only this bubble gets the active orange border; earlier bubbles fall
+  // back to a plain glass look once a newer message has appeared.
+  const activeMessage = step >= 4 ? 3 : step >= 2 ? 2 : step >= 1 ? 1 : 0;
+
   return (
     <section className="relative p-3 min-h-[auto] md:min-h-screen w-full flex items-center justify-center pt-28 pb-12 md:pt-36 md:pb-36 rounded-[1.5rem] overflow-hidden font-[var(--font-poppins)]">
       
@@ -131,16 +136,16 @@ export default function Hero() {
           </div>
         </div>
 
-        {/* Right Column Chat Widget (Compact Desktop Size) */}
+        {/* Right Column Chat Widget */}
         <div className="hidden md:flex lg:col-span-5 justify-center lg:justify-end items-end w-full h-full">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
-            className="w-full max-w-[340px] bg-black/33 backdrop-blur-xl rounded-2xl p-4 shadow-2xl space-y-3 text-white self-end"
+            className="w-full max-w-[400px] flex flex-col gap-3 self-end"
           >
             {/* Header: Agent Tag */}
-            <div className="flex items-center gap-2 text-white font-medium text-sm pb-0.5">
+            <div className="flex items-center gap-2 text-white font-semibold text-sm pb-1 pl-1">
               <Image 
                 src="/icons/chaticon.png" 
                 alt="Agent Icon" 
@@ -148,20 +153,24 @@ export default function Hero() {
                 height={18} 
                 className="w-4 h-4 object-contain"
               />
-              <span>Agent</span>
+              <span>Exei AI Agent</span>
             </div>
 
             {/* Chat Messages Container */}
-            <div className="space-y-2.5 min-h-[200px] flex flex-col justify-start">
+            <div className="flex flex-col gap-3 min-h-[150px] justify-end">
               {/* Message 1 (Agent) */}
               {step >= 1 && (
                 <motion.div
-                  initial={{ opacity: 0, y: -10 }}
-                  animate={{ opacity: 1, y: 0 }}
+                  initial={{ opacity: 0, y: -10, scale: 0.95 }}
+                  animate={{ opacity: 1, y: 0, scale: 1 }}
                   transition={{ duration: 0.4 }}
                   className="flex justify-start"
                 >
-                  <div className="px-3 py-2 bg-white/15 text-white/90 rounded-xl text-xs leading-relaxed max-w-[88%]">
+                  <div
+                    className={`px-4 py-3 bg-white/15 backdrop-blur-md border-2 text-white rounded-2xl rounded-bl-md text-sm font-medium leading-snug max-w-[85%] shadow-lg shadow-black/20 transition-colors duration-500 ${
+                      activeMessage === 1 ? "border-[#FF5E2C]" : "border-transparent"
+                    }`}
+                  >
                     {chatSequence[0].text}
                   </div>
                 </motion.div>
@@ -170,20 +179,24 @@ export default function Hero() {
               {/* Message 2 (User) */}
               {step >= 2 && (
                 <motion.div
-                  initial={{ opacity: 0, y: -10 }}
-                  animate={{ opacity: 1, y: 0 }}
+                  initial={{ opacity: 0, y: -10, scale: 0.95 }}
+                  animate={{ opacity: 1, y: 0, scale: 1 }}
                   transition={{ duration: 0.4 }}
-                  className="flex items-center justify-end gap-1.5"
+                  className="flex items-center justify-end gap-3 pl-10"
                 >
-                  <div className="px-3 py-2 bg-white/20 text-white rounded-xl text-xs leading-relaxed max-w-[85%]">
+                  <div
+                    className={`px-4 py-3 bg-white/15 backdrop-blur-md border-2 text-white rounded-2xl rounded-br-md text-sm font-medium leading-snug max-w-[82%] shadow-lg shadow-black/20 transition-colors duration-500 ${
+                      activeMessage === 2 ? "border-[#FF5E2C]" : "border-transparent"
+                    }`}
+                  >
                     {chatSequence[1].text}
                   </div>
-                  <div className="w-6 h-6 rounded-full overflow-hidden shrink-0 border border-white/20 bg-gray-600">
+                  <div className="w-12 h-12 rounded-full overflow-hidden shrink-0 border-2 border-white shadow-md bg-gray-600">
                     <Image
                       src={chatSequence[1].avatar || "/icons/web (2).png"}
                       alt="User"
-                      width={24}
-                      height={24}
+                      width={48}
+                      height={48}
                       className="object-cover w-full h-full"
                     />
                   </div>
@@ -193,30 +206,42 @@ export default function Hero() {
               {/* Message 3 (Agent) */}
               {step >= 4 && (
                 <motion.div
-                  initial={{ opacity: 0, y: -10 }}
-                  animate={{ opacity: 1, y: 0 }}
+                  initial={{ opacity: 0, y: -10, scale: 0.95 }}
+                  animate={{ opacity: 1, y: 0, scale: 1 }}
                   transition={{ duration: 0.4 }}
                   className="flex justify-start"
                 >
-                  <div className="px-3 py-2 bg-white/15 text-white/90 rounded-xl text-xs leading-relaxed max-w-[90%]">
+                  <div
+                    className={`px-4 py-3 bg-white/15 backdrop-blur-md border-2 text-white rounded-2xl rounded-bl-md text-sm font-medium leading-snug max-w-[92%] shadow-lg shadow-black/20 transition-colors duration-500 ${
+                      activeMessage === 3 ? "border-[#FF5E2C]" : "border-transparent"
+                    }`}
+                  >
                     {chatSequence[2].text}
                   </div>
                 </motion.div>
               )}
 
-              {/* Bare 3-Dot Wavy Loading Effect */}
+              {/* Typing indicator - just the dots, no pill/background/border */}
               {(step === 0 || step === 3) && (
                 <motion.div
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   exit={{ opacity: 0 }}
-                  className="flex items-center gap-1.5 pt-1 pl-2"
+                  className="flex items-center gap-1.5 pl-1"
                 >
                   <span className="w-1.5 h-1.5 rounded-full bg-white animate-bounce [animation-delay:-0.3s]" />
                   <span className="w-1.5 h-1.5 rounded-full bg-white animate-bounce [animation-delay:-0.15s]" />
                   <span className="w-1.5 h-1.5 rounded-full bg-white animate-bounce" />
                 </motion.div>
               )}
+            </div>
+
+            {/* Ask Anything Input Bar */}
+            <div className="flex items-center gap-2 bg-white/95 backdrop-blur-md rounded-full pl-5 pr-2 py-2 shadow-xl mt-1">
+              <span className="flex-1 text-sm text-gray-500">Ask anything...</span>
+              <div className="w-9 h-9 rounded-full bg-[#FF5E2C] flex items-center justify-center shrink-0">
+                <ArrowRight className="w-4 h-4 text-white stroke-[2.5]" />
+              </div>
             </div>
           </motion.div>
         </div>

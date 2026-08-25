@@ -31,8 +31,8 @@ export default function Footer() {
           {/* Description */}
           <p className="text-gray-300 text-sm sm:text-[16px] leading-relaxed max-w-2xl px-2 mb-4 sm:mb-6">
             Your Customer Are Already On WhatsApp, Instagram And Voice. The
-            Question Is Whether Your Brand Is There To Answer — Or Your
-            Competitor Is.
+            Question Is Whether Your Brand Is There To Answer Or Your
+            Competitor is?
           </p>
 
           {/* CTA Button */}

@@ -213,7 +213,7 @@ export default function HeroSection() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, ease: "easeOut" }}
-            className="text-4xl sm:text-5xl lg:text-[56px] font-extrabold tracking-tight text-gray-900 leading-[1.12] mb-5"
+            className="text-4xl sm:text-5xl lg:text-[56px] font-bold tracking-tight text-gray-900 leading-[1.12] mb-5"
           >
             Enhance Customer Experience with{" "}
             <span className="bg-clip-text text-transparent bg-gradient-to-r from-[#FF5E2C] via-[#FF733A] to-[#FFA066] inline-block">

@@ -4,8 +4,7 @@
 import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import { motion } from "framer-motion";
-import { Bell, ArrowRight } from "lucide-react";
-import NoMarkupMessagingGraphic from "@/components/ui/growth-agent/NoMarkupMessagingGraphic";
+import { ChevronLeft, Store, Phone, MoreVertical, MessageSquare } from "lucide-react";
 
 const benefits = [
   {
@@ -43,20 +42,19 @@ const benefits = [
 ];
 
 function BenefitGraphic({ index }: { index: number }) {
-  if (index === 0) return <FunnelVisibilityGraphic />;
-  if (index === 1) return <MultilingualGraphic />;
-  if (index === 2) return <UnifiedContextGraphic />;
-  return <NoMarkupMessagingGraphic />;
+  if (index === 0) return <LanguageSupportGraphic />;
+  if (index === 1) return <OrderTrackingGraphic />;
+  if (index === 2) return <CODVerificationGraphic />;
+  return <HumanHandoverGraphic />;
 }
 
 export default function BenefitsSection() {
   const [activeIndex, setActiveIndex] = useState(0);
   const cardRefs = useRef<(HTMLDivElement | null)[]>([]);
 
-  // Scrollspy logic to keep tab focus synced with user scroll position
   useEffect(() => {
     const handleScroll = () => {
-      const triggerPoint = window.innerHeight * 0.35; // 35% down viewport
+      const triggerPoint = window.innerHeight * 0.35;
 
       cardRefs.current.forEach((el, index) => {
         if (!el) return;
@@ -83,8 +81,8 @@ export default function BenefitsSection() {
 
   return (
     <section className="bg-[#fafafa] py-10 md:py-14 px-6 font-[var(--font-poppins)]">
-      <div className="max-w-6xl mx-auto">
-        {/* =============================== DESKTOP (lg+) =============================== */}
+      <div className="max-w-7xl mx-auto">
+        {/* DESKTOP (lg+) */}
         <div className="hidden lg:grid grid-cols-12 gap-12">
           {/* LEFT: Header + Sticky Tabs */}
           <div className="col-span-6">
@@ -109,7 +107,6 @@ export default function BenefitsSection() {
                           : "border-gray-200/80 bg-white hover:border-gray-300"
                       }`}
                     >
-                      {/* Rounded Circular Icon Container */}
                       <span
                         className={`shrink-0 w-9 h-9 rounded-full flex items-center justify-center transition-all duration-300 ${
                           isActive
@@ -172,7 +169,7 @@ export default function BenefitsSection() {
           </div>
         </div>
 
-        {/* =============================== MOBILE / TABLET =============================== */}
+        {/* MOBILE / TABLET */}
         <div className="lg:hidden">
           <h2 className="text-2xl font-semibold text-gray-900 tracking-tight leading-tight mb-3">
             Inbound Support & Operations with WhatsApp Automation
@@ -203,242 +200,326 @@ export default function BenefitsSection() {
   );
 }
 
-// ---------------------------------------------------------------------------
-// Card 1 Graphic — Funnel Visibility
-// ---------------------------------------------------------------------------
-function FunnelVisibilityGraphic() {
-  const stats = [
-    { label: "Impression", value: "124.5k" },
-    { label: "Click rate", value: "38.2k" },
-    { label: "Add to cart", value: "12.9k" },
-  ];
+/* ---------------------------------------------------------------------------
+   Shared helpers
+--------------------------------------------------------------------------- */
 
+// Replace src path with your logo asset
+function CustomLogo({ size = 28 }: { size?: number }) {
   return (
-    <div className="w-full max-w-md relative pt-4 pl-4">
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true }}
-        transition={{ duration: 0.5 }}
-        className="bg-white rounded-3xl shadow-xl shadow-orange-950/5 border border-gray-100 p-6 pl-8 relative z-10"
-      >
-        <div className="mb-6 pl-9">
-          <h4 className="text-base font-bold text-gray-900 leading-tight">
-            Track Shopper Progression
-          </h4>
-          <p className="text-xs text-gray-400 mt-0.5">exei.ai</p>
-        </div>
-
-        <div className="grid grid-cols-3 gap-2.5">
-          {stats.map((stat, i) => (
-            <motion.div
-              key={stat.label}
-              initial={{ opacity: 0, y: 10 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.4, delay: 0.2 + i * 0.1 }}
-              className="bg-[#F3F4F6] rounded-2xl p-3 border border-gray-100/80"
-            >
-              <p className="text-lg sm:text-xl font-extrabold text-gray-900 tracking-tight">
-                {stat.value}
-              </p>
-              <p className="text-[11px] text-gray-500 font-medium mt-1">
-                {stat.label}
-              </p>
-            </motion.div>
-          ))}
-        </div>
-      </motion.div>
-
-      <motion.div
-        initial={{ opacity: 0, scale: 0.4 }}
-        whileInView={{ opacity: 1, scale: 1 }}
-        viewport={{ once: true }}
-        transition={{ duration: 0.5, delay: 0.1, type: "spring", stiffness: 200 }}
-        className="absolute -top-1 -left-1 z-20 bg-gradient-to-tr from-[#EF4444] to-[#F87171] w-11 h-11 rounded-full flex items-center justify-center text-white shadow-lg shadow-red-500/30 border-4 border-white"
-      >
-        <Bell className="w-4 h-4 fill-white" />
-      </motion.div>
-
-      <motion.div
-        initial={{ opacity: 0, y: 14, scale: 0.9 }}
-        whileInView={{ opacity: 1, y: 0, scale: 1 }}
-        viewport={{ once: true }}
-        transition={{ duration: 0.4, delay: 0.5 }}
-        whileHover={{ scale: 1.03 }}
-        className="absolute -bottom-4 right-2 z-20 bg-[#2563EB] text-white text-xs font-medium pl-4 pr-1.5 py-1.5 rounded-full shadow-lg shadow-blue-500/25 flex items-center gap-2 cursor-pointer"
-      >
-        <span>Turn on Notification</span>
-        <div className="w-5 h-5 rounded-full bg-black flex items-center justify-center shrink-0">
-          <ArrowRight className="w-3 h-3 stroke-[2.5]" />
-        </div>
-      </motion.div>
+    <div className="relative shrink-0" style={{ width: size, height: size }}>
+      <Image
+        src="/icons/exeiLogo.png"
+        alt="Logo"
+        fill
+        className="object-contain"
+      />
     </div>
   );
 }
 
-// ---------------------------------------------------------------------------
-// Card 2 Graphic — Multilingual AI Coverage
-// ---------------------------------------------------------------------------
-function MultilingualGraphic() {
-  const languages = [
+// Darker gray line (#4B5563) for continuous downward animation
+function AnimatedDashedLine() {
+  return (
+    <svg className="w-full h-full" preserveAspectRatio="none">
+      <motion.line
+        x1="50%"
+        y1="0"
+        x2="50%"
+        y2="100%"
+        stroke="#4B5563"
+        strokeWidth="2.5"
+        strokeDasharray="5 5"
+        animate={{ strokeDashoffset: [0, -20] }}
+        transition={{ duration: 0.8, repeat: Infinity, ease: "linear" }}
+      />
+    </svg>
+  );
+}
+
+/* ---------------------------------------------------------------------------
+   Card 1 Graphic — Instant Support in 80+ Languages
+--------------------------------------------------------------------------- */
+function LanguageSupportGraphic() {
+  const topRow = [
     { name: "Hindi (hi-IN)", active: false },
     { name: "Tamil (ta-IN)", active: true },
     { name: "Telugu (te-IN)", active: false },
+  ];
+  const bottomRow = [
     { name: "Marathi (mr-IN)", active: false },
     { name: "Bengali (bn-IN)", active: false },
   ];
 
   return (
-    <div className="w-full max-w-md flex flex-col items-center justify-center py-2 relative">
+    <div className="w-full max-w-md flex flex-col items-center relative py-2">
+      <div className="absolute top-8 bottom-12 left-1/2 -translate-x-1/2 w-1 z-0">
+        <AnimatedDashedLine />
+      </div>
+
       <motion.div
-        initial={{ opacity: 0, y: -10 }}
+        initial={{ opacity: 0, y: -8 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true }}
-        className="flex items-center gap-1 font-bold text-gray-900 text-sm mb-3"
+        transition={{ duration: 0.4 }}
+        className="relative z-10 flex items-center gap-1.5 mb-4 bg-white/60 backdrop-blur-sm px-3 py-1 rounded-full border border-gray-100 shadow-sm"
       >
-        <span className="w-4 h-4 rounded-full bg-[#FF5E2C] flex items-center justify-center text-white text-[10px]">
-          e
-        </span>
-        <span>exei</span>
+        <CustomLogo size={24} />
       </motion.div>
 
       <motion.div
-        initial={{ opacity: 0, scale: 0.9 }}
-        whileInView={{ opacity: 1, scale: 1 }}
+        initial={{ opacity: 0, scale: 0.92, y: 10 }}
+        whileInView={{ opacity: 1, scale: 1, y: 0 }}
         viewport={{ once: true }}
-        transition={{ duration: 0.5 }}
-        className="bg-white rounded-full px-4 py-2 shadow-lg shadow-orange-950/5 border border-gray-100 flex items-center gap-3 relative z-10"
+        transition={{ duration: 0.45, delay: 0.15 }}
+        className="relative z-10 bg-white rounded-full pl-5 pr-1.5 py-1.5 shadow-lg shadow-orange-950/5 border border-gray-100 flex items-center gap-3 mb-8 max-w-full"
       >
-        <div className="flex items-center gap-0.5">
-          {[12, 20, 10, 18, 8].map((h, i) => (
-            <motion.span
-              key={i}
-              animate={{ height: [h, h * 1.5, h] }}
-              transition={{ repeat: Infinity, duration: 1, delay: i * 0.15 }}
-              className="w-1 bg-[#FF5E2C] rounded-full"
-              style={{ height: h }}
-            />
-          ))}
-        </div>
-
-        <span className="text-xs font-medium text-gray-700 bg-gray-50 px-3 py-1 rounded-full border border-gray-100">
-          Need help with appointments?
+        <span className="text-xs sm:text-sm text-gray-800 font-medium whitespace-nowrap">
+          I&apos;d like to check my order status.
         </span>
-
-        <div className="flex items-center gap-0.5">
-          {[8, 18, 10, 20, 12].map((h, i) => (
-            <motion.span
-              key={i}
-              animate={{ height: [h, h * 1.5, h] }}
-              transition={{ repeat: Infinity, duration: 1, delay: i * 0.15 }}
-              className="w-1 bg-[#FF5E2C] rounded-full"
-              style={{ height: h }}
-            />
-          ))}
-        </div>
-
-        <div className="w-8 h-8 rounded-full overflow-hidden border-2 border-white shadow-md relative shrink-0">
+        <div className="w-9 h-9 rounded-full overflow-hidden border-2 border-white shadow-md relative shrink-0">
           <Image
             src="/images/growth-agent/user-agent.jpg"
-            alt="User Avatar"
+            alt="Customer"
             fill
             className="object-cover"
           />
         </div>
       </motion.div>
 
-      <div className="h-6 w-0 border-r-2 border-dashed border-gray-300 my-1" />
-
-      <div className="w-full flex flex-wrap justify-center gap-2">
-        {languages.map((lang, index) => (
-          <motion.div
-            key={lang.name}
-            initial={{ opacity: 0, y: 10 }}
-            whileInView={{ opacity: 1, y: 0 }}
+      <div className="relative z-10 w-full flex flex-col items-center gap-2">
+        <div className="flex flex-wrap justify-center gap-2">
+          {topRow.map((lang, i) => (
+            <motion.div
+              key={lang.name}
+              initial={{ opacity: 0, y: 10 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.4, delay: 0.35 + i * 0.1 }}
+              className={`px-3.5 py-2 rounded-xl text-xs font-semibold whitespace-nowrap flex items-center gap-1.5 ${
+                lang.active
+                  ? "bg-[#FF5E2C] text-white shadow-md shadow-orange-500/25"
+                  : "bg-white text-gray-800 shadow-sm border border-gray-100"
+              }`}
+            >
+              {lang.active && (
+                <span className="w-1.5 h-1.5 rounded-full bg-white animate-pulse" />
+              )}
+              {lang.name}
+            </motion.div>
+          ))}
+        </div>
+        <div className="flex flex-wrap justify-center items-center gap-2">
+          {bottomRow.map((lang, i) => (
+            <motion.div
+              key={lang.name}
+              initial={{ opacity: 0, y: 10 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.4, delay: 0.55 + i * 0.1 }}
+              className="px-3.5 py-2 rounded-xl text-xs font-semibold whitespace-nowrap bg-white text-gray-800 shadow-sm border border-gray-100"
+            >
+              {lang.name}
+            </motion.div>
+          ))}
+          <motion.span
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.4, delay: 0.1 * index }}
-            className={`px-3 py-1.5 rounded-xl text-xs font-medium border transition-all ${
-              lang.active
-                ? "bg-[#FF5E2C] text-white border-[#FF5E2C] shadow-md shadow-orange-500/20 flex items-center gap-1.5"
-                : "bg-white text-gray-700 border-gray-100"
-            }`}
+            transition={{ delay: 0.75 }}
+            className="text-xs text-gray-500 font-medium pl-1 whitespace-nowrap"
           >
-            {lang.active && (
-              <span className="w-1.5 h-1.5 rounded-full bg-white animate-pulse" />
-            )}
-            {lang.name}
-          </motion.div>
-        ))}
-        <motion.span
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          viewport={{ once: true }}
-          transition={{ delay: 0.6 }}
-          className="text-xs text-gray-500 self-center font-medium pl-1"
-        >
-          +12 more
-        </motion.span>
+            +12 more
+          </motion.span>
+        </div>
       </div>
     </div>
   );
 }
 
-// ---------------------------------------------------------------------------
-// Card 3 Graphic — Unified Context
-// ---------------------------------------------------------------------------
-function UnifiedContextGraphic() {
-  const agents = ["Customer Service", "Shopping Assistant", "Growth Agent"];
-  const components = [
-    "Knowledge base",
-    "Contact Database",
-    "Conversation Inbox",
-  ];
+/* ---------------------------------------------------------------------------
+   Shared WhatsApp phone-frame header
+--------------------------------------------------------------------------- */
+function WhatsAppHeader() {
+  return (
+    <div className="bg-[#075E54] px-3 py-2.5 flex items-center gap-2.5">
+      <ChevronLeft className="w-4 h-4 text-white/90 shrink-0" />
+      <div className="relative shrink-0">
+        <CustomLogo size={28} />
+        <motion.span
+          animate={{ scale: [1, 1.3, 1], opacity: [1, 0.5, 1] }}
+          transition={{ duration: 2, repeat: Infinity }}
+          className="absolute -bottom-0.5 -right-0.5 w-2.5 h-2.5 rounded-full bg-emerald-400 border-2 border-[#075E54]"
+        />
+      </div>
+      <div className="flex-1 min-w-0">
+        <p className="text-white text-xs sm:text-sm font-semibold leading-tight truncate">
+          AI Agent
+        </p>
+        <p className="text-white/60 text-[10px] leading-tight truncate">
+          tap here for contact info
+        </p>
+      </div>
+      <div className="flex items-center gap-2.5 text-white/80 shrink-0">
+        <Store className="w-3.5 h-3.5" />
+        <Phone className="w-3.5 h-3.5" />
+        <MoreVertical className="w-3.5 h-3.5" />
+      </div>
+    </div>
+  );
+}
+
+/* ---------------------------------------------------------------------------
+   Card 2 Graphic — Live Order & Return Tracking
+--------------------------------------------------------------------------- */
+function OrderTrackingGraphic() {
+  const quickReplies = ["Check Order Status", "Initiate a Return", "Schedule Appointment"];
 
   return (
-    <div className="w-full max-w-md flex flex-col items-center justify-center py-2 relative">
-      <div className="w-full grid grid-cols-3 gap-2">
-        {agents.map((agent, i) => (
-          <motion.div
-            key={agent}
-            initial={{ opacity: 0, y: -10 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.4, delay: i * 0.15 }}
-            className="bg-white rounded-full py-1.5 px-2 border border-orange-500/40 shadow-sm flex items-center justify-center gap-1 text-[11px] font-medium text-gray-800"
-          >
-            <span className="w-3.5 h-3.5 rounded-full bg-[#FF5E2C] text-white flex items-center justify-center text-[8px] font-bold">
-              e
-            </span>
-            <span className="truncate">{agent}</span>
-          </motion.div>
-        ))}
+    <div className="w-full max-w-[340px] mx-auto rounded-2xl overflow-hidden shadow-xl border border-gray-100 bg-white">
+      <WhatsAppHeader />
+
+      <div className="relative bg-[#EFEAE2] px-4 py-5 min-h-[230px] flex flex-col gap-3">
+        {/* Custom WhatsApp background image overlay */}
+        <div 
+          className="absolute inset-0 pointer-events-none opacity-20 bg-repeat bg-center"
+          style={{ backgroundImage: "url('/images/whatsapp-bg.png')" }} 
+        />
+
+        <motion.div
+          initial={{ opacity: 0, y: 12, scale: 0.96 }}
+          whileInView={{ opacity: 1, y: 0, scale: 1 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.45 }}
+          className="relative z-10 bg-[#D9FDD3] rounded-xl rounded-tl-sm p-3 max-w-[85%] shadow-sm"
+        >
+          <p className="text-[12px] sm:text-[13px] text-gray-900 leading-snug mb-2.5">
+            Hi there 👋 I&apos;m your commerce assistant. How can I help you today?
+          </p>
+          <div className="flex flex-col gap-1.5">
+            {quickReplies.map((label, i) => (
+              <motion.div
+                key={label}
+                initial={{ opacity: 0, x: -8 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.35, delay: 0.2 + i * 0.12 }}
+                className="bg-white rounded-full py-1.5 px-3 text-center text-[11px] sm:text-xs font-semibold text-[#075E54] shadow-sm"
+              >
+                {label}
+              </motion.div>
+            ))}
+          </div>
+        </motion.div>
+
+        <motion.div
+          initial={{ opacity: 0, y: 12, scale: 0.96 }}
+          whileInView={{ opacity: 1, y: 0, scale: 1 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.45, delay: 0.75 }}
+          className="relative z-10 self-end bg-white rounded-xl rounded-tr-sm p-3 max-w-[80%] shadow-sm"
+        >
+          <p className="text-[12px] sm:text-[13px] text-gray-900 leading-snug">
+            I&apos;d like to check my order status, please.
+          </p>
+        </motion.div>
+      </div>
+    </div>
+  );
+}
+
+/* ---------------------------------------------------------------------------
+   Card 3 Graphic — Automated COD Verification
+--------------------------------------------------------------------------- */
+function CODVerificationGraphic() {
+  return (
+    <div className="w-full max-w-md flex flex-col items-center relative py-2">
+      <div className="absolute top-10 bottom-6 left-1/2 -translate-x-1/2 w-1 z-0">
+        <AnimatedDashedLine />
       </div>
 
-      <div className="w-full h-8 relative my-1">
-        <svg className="w-full h-full" viewBox="0 0 300 30" fill="none">
-          <path
-            d="M 50 0 V 15 H 250 V 0 M 150 0 V 30 M 50 15 V 30 M 250 15 V 30"
-            stroke="#CBD5E1"
-            strokeWidth="1.5"
-            strokeDasharray="3 3"
-          />
-        </svg>
-      </div>
+      <motion.div
+        initial={{ opacity: 0, y: -10, scale: 0.95 }}
+        whileInView={{ opacity: 1, y: 0, scale: 1 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.5 }}
+        className="relative z-10 bg-white rounded-full pl-3 pr-5 py-1.5 shadow-lg shadow-orange-950/5 border border-gray-100 flex items-center gap-3 mb-10 max-w-full"
+      >
+        <CustomLogo size={32} />
+        <span className="text-xs sm:text-sm font-semibold text-gray-900 whitespace-nowrap">
+          Hi, Please confirm your COD Order #10298
+        </span>
+      </motion.div>
 
-      <div className="w-full grid grid-cols-3 gap-2">
-        {components.map((comp, i) => (
+      <div className="relative z-10 w-full max-w-[280px] flex flex-col gap-3">
+        {[0, 1].map((i) => (
           <motion.div
-            key={comp}
+            key={i}
             initial={{ opacity: 0, y: 10 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.4, delay: 0.3 + i * 0.15 }}
-            className="bg-white rounded-xl py-3 px-2 border border-gray-100 shadow-sm text-center text-xs font-semibold text-gray-800"
+            transition={{ duration: 0.4, delay: 0.35 + i * 0.15 }}
+            className="bg-white rounded-full px-3 py-2.5 shadow-md border border-gray-100 flex items-center gap-3"
           >
-            {comp}
+            <div className="w-7 h-7 rounded-full bg-gray-200 shrink-0" />
+            <div className="h-1.5 bg-gray-200 rounded-full flex-1" />
+            <MessageSquare className="w-3.5 h-3.5 text-gray-300 shrink-0" />
           </motion.div>
         ))}
+      </div>
+    </div>
+  );
+}
+
+/* ---------------------------------------------------------------------------
+   Card 4 Graphic — Smooth Human Handover
+--------------------------------------------------------------------------- */
+function HumanHandoverGraphic() {
+  return (
+    <div className="w-full max-w-[340px] mx-auto rounded-2xl overflow-hidden shadow-xl border border-gray-100 bg-white">
+      <WhatsAppHeader />
+
+      <div className="relative bg-[#EFEAE2] px-4 py-5 min-h-[260px] flex flex-col gap-3">
+        {/* Custom WhatsApp background image overlay */}
+        <div 
+          className="absolute inset-0 pointer-events-none opacity-20 bg-repeat bg-center"
+          style={{ backgroundImage: "url('/images/whatsapp-bg.png')" }} 
+        />
+
+        <motion.div
+          initial={{ opacity: 0, y: 12, scale: 0.96 }}
+          whileInView={{ opacity: 1, y: 0, scale: 1 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.4 }}
+          className="relative z-10 self-end bg-white rounded-xl rounded-tr-sm p-3 max-w-[80%] shadow-sm"
+        >
+          <p className="text-[12px] sm:text-[13px] text-gray-900 leading-snug">
+            I&apos;d like to check my order status, please.
+          </p>
+        </motion.div>
+
+        <motion.div
+          initial={{ opacity: 0, y: 12, scale: 0.96 }}
+          whileInView={{ opacity: 1, y: 0, scale: 1 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.4, delay: 0.4 }}
+          className="relative z-10 bg-[#D9FDD3] rounded-xl rounded-tl-sm p-3 max-w-[85%] shadow-sm"
+        >
+          <p className="text-[12px] sm:text-[13px] text-gray-900 leading-snug">
+            It looks like there may be a delivery issue. Would you like me to connect you with a support agent who can help resolve this?
+          </p>
+        </motion.div>
+
+        <motion.button
+          initial={{ opacity: 0, y: 10, scale: 0.94 }}
+          whileInView={{ opacity: 1, y: 0, scale: 1 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.4, delay: 0.8 }}
+          whileHover={{ scale: 1.03 }}
+          className="relative z-10 self-center mt-1 bg-white border-2 border-[#FF5E2C] rounded-full px-6 py-2.5 text-xs sm:text-sm font-bold text-gray-900 shadow-md"
+        >
+          Human Takeover
+        </motion.button>
       </div>
     </div>
   );
