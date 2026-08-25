@@ -6,7 +6,7 @@ import { ArrowRight } from "lucide-react";
 
 export default function Footer() {
   return (
-    <footer className="relative bg-black text-white pt-10 sm:pt-10 pb-12 px-4 sm:px-6 font-[var(--font-poppins)] overflow-hidden">
+    <footer className="relative bg-black text-white pt-12 sm:pt-14 pb-12 px-4 sm:px-6 font-[var(--font-poppins)] overflow-hidden">
       {/* Background Curtain/Glow Image Layer */}
       <div className="absolute inset-x-0 bottom-0 h-full z-0 pointer-events-none overflow-hidden">
         <div className="absolute inset-x-0 top-0 h-40 bg-gradient-to-b from-black via-black/80 to-transparent z-10" />

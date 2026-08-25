@@ -22,7 +22,7 @@ import {
    ========================================================================== */
 function AnimatedFeatureGraphic1() {
   return (
-    <div className="relative w-full h-full min-h-[520px] sm:min-h-[580px] lg:min-h-[620px] rounded-3xl bg-[#F5F6FA] flex flex-col items-center justify-center overflow-hidden p-4 sm:p-8 select-none">
+    <div className="relative w-full h-full min-h-[520px] sm:min-h-[580px] lg:min-h-[620px] rounded-2xl bg-[#F5F6FA] flex flex-col items-center justify-center overflow-hidden p-4 sm:p-8 select-none">
       <div className="absolute inset-0 pointer-events-none">
         <div className="absolute -bottom-10 -left-10 w-[320px] sm:w-[450px] h-[320px] sm:h-[450px] bg-[#FFD7CC]/60 rounded-full blur-3xl" />
       </div>
@@ -476,7 +476,7 @@ function FeatureCardBlock({
         whileInView="visible"
         viewport={{ once: true, margin: "-50px" }}
         variants={containerVariants}
-        className="bg-white rounded-3xl p-4 sm:p-6 lg:p-8 shadow-[0_10px_35px_rgba(0,0,0,0.06)] border border-gray-200/80 overflow-hidden mb-12 sm:mb-16"
+        className="bg-white rounded-2xl p-4 sm:p-6 lg:p-8 shadow-[0_10px_35px_rgba(0,0,0,0.06)] border border-gray-200/80 overflow-hidden mb-12 sm:mb-16"
       >
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-stretch">
           {/* Content Column */}
@@ -575,7 +575,7 @@ function FeatureCardBlock({
    ========================================================================== */
 export default function FeaturesSection() {
   return (
-    <section className="relative w-full bg-[#FBFBFC] py-12 sm:py-20 px-4 sm:px-6 lg:px-8">
+    <section className="relative w-full bg-[#FBFBFC] py-8 sm:py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-[1240px] mx-auto relative pb-20">
         {featureSections.map((section, index) => (
           <FeatureCardBlock

@@ -1,155 +1,251 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React from "react";
 import Image from "next/image";
-import { motion, Variants } from "framer-motion";
+import { ArrowRight, Globe } from "lucide-react";
+import { motion } from "framer-motion";
 
 /* ==========================================================================
-   EXACT EXEI LOGO COMPONENT
+   PRODUCT CARDS DATA
    ========================================================================== */
-function ExeiLogo({ size = "w-6 h-6" }: { size?: string }) {
+const productCards = [
+  {
+    id: 1,
+    title: "Black Sleeveless Bodycon",
+    price: "₹1,499",
+    color: "Color: Black",
+    imgSrc: "/images/website-ai-agent/product-1.png",
+  },
+  {
+    id: 2,
+    title: "Red Wine Dress",
+    price: "₹1,499",
+    color: "Color: Red",
+    imgSrc: "/images/website-ai-agent/product-2.jpg",
+  },
+  {
+    id: 3,
+    title: "White",
+    price: "₹1,499",
+    color: "Color: Black",
+    imgSrc: "/images/website-ai-agent/product-3.jpg",
+  },
+];
+
+/* ==========================================================================
+   MODULAR LOGO COMPONENT
+   ========================================================================== */
+function CustomLogo() {
   return (
-    <div
-      className={`${size} rounded-full bg-black p-[2px] relative flex items-center justify-center shadow-md flex-shrink-0`}
-    >
-      <div className="absolute inset-0 rounded-full bg-gradient-to-tr from-[#FF5E2C] via-[#E10098] to-[#6E00F5] -z-0" />
-      <div className="w-full h-full bg-black rounded-full flex items-center justify-center relative z-10">
-        <span className="text-white font-bold text-xs font-sans tracking-tighter leading-none mb-[1px]">
-          e
-        </span>
+    <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-full relative flex items-center justify-center shrink-0 overflow-hidden shadow-md">
+      <Image
+        src="/images/website-ai-agent/exei-logo.png"
+        alt="Logo"
+        fill
+        className="object-contain"
+        onError={(e) => {
+          (e.target as HTMLElement).style.display = "none";
+        }}
+      />
+      <div className="w-full h-full bg-gradient-to-tr from-[#FF5E2C] via-[#E10098] to-[#6E00F5] flex items-center justify-center">
+        <span className="text-white font-bold text-xs">e</span>
       </div>
     </div>
   );
 }
 
 /* ==========================================================================
-   SEQUENTIAL CHATBOT COMPONENT
+   RIGHT COLUMN: PURPLE MOTION GRAPHIC CANVAS (FULL BORDER CROPPED & RESPONSIVE)
    ========================================================================== */
-function MotionChatbot() {
-  const [typingText, setTypingText] = useState("");
-  const [showCursor, setShowCursor] = useState(false);
-  const fullText = "A whole new way to work";
-
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setShowCursor(true);
-      let index = 0;
-      const interval = setInterval(() => {
-        if (index <= fullText.length) {
-          setTypingText(fullText.slice(0, index));
-          index++;
-        } else {
-          clearInterval(interval);
-        }
-      }, 90);
-
-      return () => clearInterval(interval);
-    }, 4000);
-
-    return () => clearTimeout(timer);
-  }, []);
-
-  const bubbleVariants: Variants = {
-    hidden: { opacity: 0, y: 12, scale: 0.98 },
-    visible: (customStep: number) => ({
-      opacity: 1,
-      y: 0,
-      scale: 1,
-      transition: {
-        delay: customStep * 1.2,
-        duration: 0.45,
-        ease: [0.22, 1, 0.36, 1],
-      },
-    }),
-  };
-
+function HeroGraphic() {
   return (
-    <div className="w-full max-w-[360px] sm:max-w-[420px] bg-white rounded-[28px] sm:rounded-[32px] border-[1.5px] border-[#FF5E2C] shadow-[0_25px_60px_rgba(0,0,0,0.5)] overflow-hidden text-left flex flex-col font-sans relative z-20">
-      {/* Header */}
-      <div className="p-3.5 sm:p-4 border-b border-gray-100 flex items-center gap-2.5 bg-white">
-        <ExeiLogo size="w-7 h-7" />
-        <div>
-          <h4 className="text-xs sm:text-sm font-semibold text-gray-900 leading-tight">
-            Exei AI Agent
-          </h4>
-          <p className="text-[11px] font-medium text-gray-400 flex items-center gap-1.5">
-            <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 inline-block" />
-            AI · Online
-          </p>
+    <div className="relative w-full max-w-[580px] lg:max-w-[620px] rounded-[24px] sm:rounded-[32px] p-4 sm:p-7 pt-8 sm:pt-12 pb-6 flex flex-col items-center justify-between overflow-hidden">
+      
+      {/* 
+        BACKGROUND LAYER: 
+        Scales the background image slightly (108%) to crop out the burnt-in white border from the image file itself.
+      */}
+      <div
+        className="absolute inset-0 z-0 bg-cover bg-center bg-no-repeat scale-[1.08] pointer-events-none"
+        style={{ backgroundImage: "url('/images/website-ai-agent/website-bg.png')" }}
+      />
+
+      {/* SVG ANIMATED CONNECTOR LINES */}
+      <svg
+        className="absolute inset-0 w-full h-full pointer-events-none z-10"
+        viewBox="0 0 600 630"
+        preserveAspectRatio="none"
+      >
+        {/* Top Vertical Line from Chat Bubble down to Branch */}
+        <motion.path
+          d="M 300,135 L 300,185"
+          stroke="rgba(255, 255, 255, 0.75)"
+          strokeWidth="2.5"
+          strokeDasharray="6 6"
+          fill="none"
+          animate={{ strokeDashoffset: [0, -24] }}
+          transition={{ duration: 1.5, repeat: Infinity, ease: "linear" }}
+        />
+
+        {/* Horizontal Branching Line */}
+        <motion.path
+          d="M 140,185 L 460,185"
+          stroke="rgba(255, 255, 255, 0.75)"
+          strokeWidth="2.5"
+          strokeDasharray="6 6"
+          fill="none"
+          animate={{ strokeDashoffset: [0, -24] }}
+          transition={{ duration: 1.5, repeat: Infinity, ease: "linear" }}
+        />
+
+        {/* 3 Vertical Lines Dropping into Cards */}
+        <motion.path
+          d="M 140,185 L 140,230 M 300,185 L 300,230 M 460,185 L 460,230"
+          stroke="rgba(255, 255, 255, 0.75)"
+          strokeWidth="2.5"
+          strokeDasharray="6 6"
+          fill="none"
+          animate={{ strokeDashoffset: [0, -24] }}
+          transition={{ duration: 1.5, repeat: Infinity, ease: "linear" }}
+        />
+
+        {/* Bottom Line Connecting Cards down through Sarah Rai and Ayushi */}
+        <motion.path
+          d="M 300,435 L 300,580"
+          stroke="rgba(255, 255, 255, 0.75)"
+          strokeWidth="2.5"
+          strokeDasharray="6 6"
+          fill="none"
+          animate={{ strokeDashoffset: [0, -24] }}
+          transition={{ duration: 1.5, repeat: Infinity, ease: "linear" }}
+        />
+      </svg>
+
+      {/* TOP FLOATING BADGE: Website AI Agent / Deploy */}
+      <motion.div
+        initial={{ opacity: 0, y: -20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6, delay: 0.1 }}
+        className="relative z-20 bg-white/95 backdrop-blur-md px-4 sm:px-5 py-2 sm:py-2.5 rounded-full shadow-lg border-2 border-orange-500/40 flex items-center gap-3 sm:gap-5"
+      >
+        <div className="flex items-center gap-2 sm:gap-2.5">
+          <Globe className="w-4 h-4 sm:w-5 sm:h-5 text-emerald-500" />
+          <span className="text-xs sm:text-base font-semibold text-gray-800 tracking-tight">
+            Website AI Agent
+          </span>
         </div>
+        <button
+          type="button"
+          className="bg-[#FF5E2C] text-white text-[11px] sm:text-sm font-semibold px-3 sm:px-4 py-1 sm:py-1.5 rounded-full shadow-md hover:bg-[#FF4500] transition-colors"
+        >
+          Deploy
+        </button>
+      </motion.div>
+
+      {/* SECOND BADGE: AI Chat Intro Bubble */}
+      <motion.div
+        initial={{ opacity: 0, y: -15, scale: 0.95 }}
+        animate={{ opacity: 1, y: 0, scale: 1 }}
+        transition={{ duration: 0.5, delay: 0.25 }}
+        className="relative z-20 mt-3 sm:mt-4 bg-white/95 backdrop-blur-md px-3.5 sm:px-5 py-2 sm:py-2.5 rounded-full shadow-md border border-white/60 flex items-center gap-2.5 sm:gap-3.5 max-w-[98%] sm:max-w-[95%]"
+      >
+        <CustomLogo />
+        <p className="text-[11px] sm:text-sm font-medium text-gray-800 leading-tight">
+          I found a few matching items based on your preferences.
+        </p>
+      </motion.div>
+
+      {/* MIDDLE SECTION: PRODUCT CARDS */}
+      <div className="relative z-20 w-full grid grid-cols-3 gap-2 sm:gap-4 my-4 sm:my-8">
+        {productCards.map((product, idx) => (
+          <motion.div
+            key={product.id}
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.35 + idx * 0.1 }}
+            whileHover={{ y: -6, transition: { duration: 0.2 } }}
+            className="bg-white rounded-xl sm:rounded-2xl p-2 sm:p-3 shadow-xl border border-white/80 flex flex-col justify-between w-full"
+          >
+            {/* Image Box */}
+            <div className="relative w-full aspect-[3/3.8] rounded-lg sm:rounded-xl bg-gray-100 overflow-hidden mb-1.5 sm:mb-2">
+              <Image
+                src={product.imgSrc}
+                alt={product.title}
+                fill
+                className="object-cover"
+                onError={(e) => {
+                  (e.target as HTMLElement).style.display = "none";
+                }}
+              />
+              <div className="absolute bottom-1 right-1 sm:bottom-1.5 sm:right-1.5 bg-black/80 backdrop-blur-xs p-1 sm:p-1.5 rounded-md text-white">
+                <svg className="w-2.5 h-2.5 sm:w-3 sm:h-3 fill-current" viewBox="0 0 24 24">
+                  <path d="M19 6h-2c0-2.76-2.24-5-5-5S7 3.24 7 6H5c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2zm-7-3c1.66 0 3 1.34 3 3H9c0-1.66 1.34-3 3-3zm7 17H5V8h2v2c0 .55.45 1 1 1s1-.45 1-1V8h6v2c0 .55.45 1 1 1s1-.45 1-1V8h2v12z" />
+                </svg>
+              </div>
+            </div>
+
+            {/* Product Meta */}
+            <div>
+              <h5 className="text-[10px] sm:text-sm font-bold text-gray-900 leading-snug truncate">
+                {product.title}
+              </h5>
+              <div className="flex items-center gap-1 sm:gap-1.5 mt-0.5 text-[9px] sm:text-xs text-gray-400">
+                <span className="font-semibold text-gray-600">{product.price}</span>
+                <span>·</span>
+                <span className="truncate">{product.color}</span>
+              </div>
+              <button
+                type="button"
+                className="mt-1 sm:mt-1.5 text-[9px] sm:text-xs text-blue-600 font-semibold hover:underline block"
+              >
+                Know More ›
+              </button>
+            </div>
+          </motion.div>
+        ))}
       </div>
 
-      {/* Message Area */}
-      <div className="p-4 sm:p-5 space-y-3 bg-white min-h-[350px] sm:min-h-[370px] flex flex-col justify-end">
-        {/* Message 1 */}
+      {/* BOTTOM SECTION: USER PILLS */}
+      <div className="relative z-20 w-full flex flex-col items-center gap-2 sm:gap-2.5 mb-1 sm:mb-2">
         <motion.div
-          custom={0}
-          initial="hidden"
-          animate="visible"
-          variants={bubbleVariants}
-          className="flex items-start gap-2.5"
+          initial={{ opacity: 0, scale: 0.9 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.4, delay: 0.7 }}
+          className="bg-white/95 backdrop-blur-md px-3.5 sm:px-4 py-1.5 sm:py-2 rounded-full shadow-md border border-white/60 flex items-center gap-2.5 sm:gap-3 min-w-[130px] sm:min-w-[150px]"
         >
-          <ExeiLogo size="w-6 h-6" />
-          <div className="bg-[#F3F3F3] text-gray-800 text-xs sm:text-sm py-2.5 px-3.5 rounded-2xl rounded-tl-xs max-w-[82%] font-normal leading-snug">
-            Hello! Describe the agent you want to build.
+          <div className="w-6 h-6 sm:w-7 sm:h-7 rounded-full bg-orange-100 overflow-hidden relative shrink-0">
+            <Image
+              src="/images/website-ai-agent/user1.jpg"
+              alt="Sarah Rai"
+              fill
+              className="object-cover"
+              onError={(e) => {
+                (e.target as HTMLElement).style.display = "none";
+              }}
+            />
           </div>
+          <span className="text-xs sm:text-sm font-semibold text-gray-800">Sarah Rai</span>
         </motion.div>
 
-        {/* Message 2 */}
         <motion.div
-          custom={1}
-          initial="hidden"
-          animate="visible"
-          variants={bubbleVariants}
-          className="flex justify-end"
+          initial={{ opacity: 0, scale: 0.9 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.4, delay: 0.85 }}
+          className="bg-white/95 backdrop-blur-md px-3.5 sm:px-4 py-1.5 sm:py-2 rounded-full shadow-md border border-white/60 flex items-center gap-2.5 sm:gap-3 min-w-[130px] sm:min-w-[150px]"
         >
-          <div className="bg-black text-white text-xs sm:text-sm py-3 px-4 rounded-2xl rounded-tr-xs max-w-[82%] font-normal leading-snug shadow-md">
-            Handle customer order updates and returns
+          <div className="w-6 h-6 sm:w-7 sm:h-7 rounded-full bg-purple-100 overflow-hidden relative shrink-0">
+            <Image
+              src="/images/website-ai-agent/user2.png"
+              alt="Ayushi"
+              fill
+              className="object-cover"
+              onError={(e) => {
+                (e.target as HTMLElement).style.display = "none";
+              }}
+            />
           </div>
+          <span className="text-xs sm:text-sm font-semibold text-gray-800">Ayushi</span>
         </motion.div>
-
-        {/* Message 3 */}
-        <motion.div
-          custom={2}
-          initial="hidden"
-          animate="visible"
-          variants={bubbleVariants}
-          className="flex items-start gap-2.5"
-        >
-          <ExeiLogo size="w-6 h-6" />
-          <div className="bg-[#F3F3F3] text-gray-800 p-3.5 rounded-2xl rounded-tl-xs max-w-[88%] w-full space-y-2">
-            <p className="text-xs sm:text-sm font-semibold text-gray-900">
-              Updates & return agent
-            </p>
-            <div className="pl-3 border-l-2 border-gray-400/80 space-y-1 my-1.5">
-              <p className="text-xs text-gray-500">Product recommendations</p>
-              <p className="text-xs text-gray-500">Update order status</p>
-            </div>
-            <p className="text-xs sm:text-sm font-semibold text-gray-900">
-              Resolved automatically
-            </p>
-          </div>
-        </motion.div>
-
-        {/* Persistent Input Bar */}
-        <div className="pt-1.5">
-          <div className="bg-[#F3F3F3] rounded-full py-2.5 px-4 flex items-center justify-between">
-            <span className="text-xs sm:text-sm text-gray-900 font-normal flex items-center min-h-[20px]">
-              {typingText}
-              {showCursor && (
-                <span className="w-[1.5px] h-4 bg-gray-900 ml-0.5 animate-pulse" />
-              )}
-            </span>
-            <div className="w-6.5 h-6.5 rounded-full bg-[#FF5E2C] flex items-center justify-center flex-shrink-0 shadow-sm cursor-pointer">
-              <svg
-                className="w-3.5 h-3.5 text-white fill-white translate-x-[1px]"
-                viewBox="0 0 24 24"
-              >
-                <path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z" />
-              </svg>
-            </div>
-          </div>
-        </div>
       </div>
     </div>
   );
@@ -160,72 +256,53 @@ function MotionChatbot() {
    ========================================================================== */
 export default function HeroSection() {
   return (
-    <section className="w-full bg-white text-gray-900 pt-16 sm:pt-24 lg:pt-28 pb-0 px-4 sm:px-6 overflow-hidden">
-      <div className="max-w-7xl mx-auto flex flex-col items-center text-center">
-        {/* Main Headline */}
-        <motion.h1
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, ease: "easeOut" }}
-          className="text-3xl sm:text-4xl md:text-5xl lg:text-[56px] font-extrabold tracking-tight text-gray-900 max-w-4xl leading-[1.15] mb-4 sm:mb-5"
-        >
-          <span className="bg-clip-text text-transparent bg-gradient-to-r from-[#FF5E2C] via-[#FF7733] to-[#FFA066]">
-            Website AI
-          </span>{" "}
-          Agent for <br className="hidden sm:inline" />
-          Conversion and Support.
-        </motion.h1>
+    <section className="w-full bg-white text-gray-900 py-20 sm:py-20 lg:pt-24 pb-8 px-4 sm:px-6 lg:px-12 overflow-hidden">
+      <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-8 items-center">
+        {/* LEFT COLUMN: TEXT CONTENT */}
+        <div className="lg:col-span-6 flex flex-col items-center lg:items-start text-center lg:text-left">
+          <motion.h1
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, ease: "easeOut" }}
+            className="text-4xl sm:text-5xl lg:text-[56px] font-extrabold tracking-tight text-gray-900 leading-[1.12] mb-4"
+          >
+            <span className="bg-clip-text text-transparent bg-gradient-to-r from-[#FF5E2C] via-[#FF7733] to-[#FFA066]">
+              Website AI
+            </span>{" "}
+            Agent for Conversion and Support.
+          </motion.h1>
 
-        {/* Subtitle */}
-        <motion.p
-          initial={{ opacity: 0, y: 15 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.15, ease: "easeOut" }}
-          className="text-gray-500 text-xs sm:text-sm md:text-base max-w-2xl font-normal leading-relaxed mb-10 sm:mb-14"
-        >
-          Deploy website AI chatbot and encourage users to start a conversation,
-          address queries, recommend products and offer quick support.
-        </motion.p>
+          <motion.p
+            initial={{ opacity: 0, y: 15 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.15, ease: "easeOut" }}
+            className="text-gray-500 text-sm sm:text-base lg:text-lg max-w-xl font-normal leading-relaxed mb-4"
+          >
+            Deploy website AI chatbot and encourage users to start a conversation,
+            address queries, recommend products and offer quick support.
+          </motion.p>
 
-        {/* Extended Hero Banner Container */}
-        <motion.div
-          initial={{ opacity: 0, y: 40 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.25, ease: [0.22, 1, 0.36, 1] }}
-          style={{ backgroundImage: "url('/images/bg-img.png')" }}
-          className="w-full max-w-[1280px] rounded-t-[32px] sm:rounded-t-[40px] bg-cover bg-center bg-no-repeat pt-10 sm:pt-16 pb-0 px-4 sm:px-8 relative overflow-hidden flex justify-center items-end"
-        >
-          {/* Vertical Warm Glow Overlay */}
-          <div
-            style={{
-              background:
-                "radial-gradient(circle at 50% 100%, rgba(180, 70, 20, 0.45) 0%, rgba(20, 10, 5, 0.85) 75%)",
-            }}
-            className="absolute inset-0 pointer-events-none z-0"
-          />
-
-          {/* Stacked Layout on Mobile / Side-by-Side Flex on Desktop */}
-          <div className="relative z-10 w-full max-w-[980px] grid grid-cols-1 items-end justify-items-center md:flex md:flex-row md:items-end md:justify-center">
-            {/* Background Browser Frame (Full Width Behind on Mobile) */}
-            <div className="col-start-1 row-start-1 w-full md:w-[600px] lg:w-[680px] flex-shrink-0 md:-mr-28 lg:-mr-36 relative z-0">
-              <div className="rounded-t-2xl overflow-hidden shadow-[0_10px_30px_rgba(0,0,0,0.5)] border-b-[6px] border-[#E3531D] w-full">
-                <Image
-                  src="/images/website-ai-agent/chatbot-bg.png"
-                  alt="Website Dashboard Mockup"
-                  width={700}
-                  height={450}
-                  priority
-                  className="w-full h-auto object-contain block opacity-95"
-                />
+          <motion.div
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.5, delay: 0.3 }}
+          >
+            <button
+              type="button"
+              className="group inline-flex items-center gap-3 bg-gradient-to-r from-[#FF5E2C] via-[#FF692E] to-[#FF7A28] text-white font-medium text-sm pl-6 pr-2 py-2.5 rounded-full hover:scale-[1.03] active:scale-[0.98] transition-all duration-300 cursor-pointer"
+            >
+              <span>See How It Works</span>
+              <div className="w-7 h-7 rounded-full bg-white/20 backdrop-blur-md border border-white/30 flex items-center justify-center shadow-inner group-hover:bg-white/30 transition-colors">
+                <ArrowRight className="w-4 h-4 text-white" strokeWidth={2.5} />
               </div>
-            </div>
+            </button>
+          </motion.div>
+        </div>
 
-            {/* Foreground Chatbot Window (Overlaid in Front on Mobile) */}
-            <div className="col-start-1 row-start-1 w-full md:w-auto flex justify-center relative z-20 md:mt-0 mb-4">
-              <MotionChatbot />
-            </div>
-          </div>
-        </motion.div>
+        {/* RIGHT COLUMN: MOTION GRAPHIC CANVAS */}
+        <div className="lg:col-span-6 flex justify-center lg:justify-end">
+          <HeroGraphic />
+        </div>
       </div>
     </section>
   );

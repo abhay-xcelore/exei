@@ -2,12 +2,21 @@
 
 import { useState, useRef, useEffect, useCallback } from "react";
 import Image from "next/image";
-import { ChevronLeft, ChevronRight } from "lucide-react";
+import {
+  ChevronLeft,
+  ChevronRight,
+  ShoppingCart,
+  Megaphone,
+  UserPlus,
+  RefreshCw,
+  LucideIcon,
+} from "lucide-react";
 import { motion } from "framer-motion";
 
 interface CapabilityCard {
   id: number;
-  mediaSrc: string; // Image or Motion Graphic asset path
+  icon?: LucideIcon;
+  logoSrc?: string; // Set this if you want to use custom image logos instead of Lucide icons
   title: string;
   description: string;
 }
@@ -15,28 +24,32 @@ interface CapabilityCard {
 const capabilities: CapabilityCard[] = [
   {
     id: 1,
-    mediaSrc: "/images/capabilities/natural-language.png",
+    icon: ShoppingCart,
+    logoSrc: "/icons/whatsapp-automation/cart (2).svg", 
     title: "Abandoned Cart Recovery",
     description:
       "Trigger whatsapp automated messages with direct checkout links when shoppers leave items behind, recovering revenue while intent is high.",
   },
   {
     id: 2,
-    mediaSrc: "/images/capabilities/live-sync.png",
+    icon: Megaphone,
+    logoSrc: "/icons/whatsapp-automation/megaphone.svg",
     title: "New Drops & Seasonal Broadcasts",
     description:
       "Send personalized offers, festival discounts, and collection announcements to targeted buyer segments via official WhatsApp broadcasts.",
   },
   {
     id: 3,
-    mediaSrc: "/images/capabilities/visual-cards.png",
+    icon: UserPlus,
+    logoSrc: "/icons/whatsapp-automation/user.svg",
     title: "Win-Back Inactive Shoppers",
     description:
       "Automatically re-engage customers who have not made a purchase in 30, 60, or 90 days with deals tailored to their past order history.",
   },
   {
     id: 4,
-    mediaSrc: "/images/capabilities/upsell.png",
+    icon: RefreshCw,
+    logoSrc: "/icons/whatsapp-automation/shopify.svg",
     title: "Shopify & CRM Sync",
     description:
       "Keep contact tags, campaign activity, and purchase history updated across your entire store stack in real time.",
@@ -59,9 +72,8 @@ export default function CapabilitiesCarousel() {
         setStepWidth(firstCard.offsetWidth + gap);
       }
 
-      // Responsive max index calculation to prevent scrolling past the last card
       if (window.innerWidth >= 1024) {
-        setMaxIndex(Math.max(0, capabilities.length - 3)); // Displays ~3 visible cards on desktop
+        setMaxIndex(Math.max(0, capabilities.length - 3));
       } else if (window.innerWidth >= 640) {
         setMaxIndex(Math.max(0, capabilities.length - 2));
       } else {
@@ -82,7 +94,6 @@ export default function CapabilitiesCarousel() {
     setCurrentIndex((prev) => (prev <= 0 ? maxIndex : prev - 1));
   };
 
-  // Auto-slide every 3 seconds (pauses on hover/touch)
   useEffect(() => {
     if (isHovered) return;
 
@@ -93,7 +104,6 @@ export default function CapabilitiesCarousel() {
     return () => clearInterval(timer);
   }, [handleNext, isHovered]);
 
-  // Handle touch swipe / drag gestures
   const handleDragEnd = (
     _: unknown,
     info: { offset: { x: number }; velocity: { x: number } }
@@ -108,9 +118,8 @@ export default function CapabilitiesCarousel() {
 
   return (
     <section className="relative w-full overflow-hidden font-[var(--font-poppins)]">
-      {/* Outer Dark Wrapper spanning full width with inner container limits */}
-      <div className="relative w-full rounded-[2.5rem] bg-[#0A0A0A] text-white py-10 sm:py-14 md:py-16 overflow-hidden">
-        
+      {/* Outer Dark Wrapper */}
+      <div className="relative w-full rounded-[2.5rem] bg-[#0A0A0A] text-white py-12 sm:py-16 md:py-20 overflow-hidden">
         {/* Background Image Layer */}
         <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden">
           <Image
@@ -125,37 +134,34 @@ export default function CapabilitiesCarousel() {
 
         {/* Content Section */}
         <div className="relative z-20 max-w-7xl mx-auto px-4 sm:px-8 lg:px-10">
-          
           {/* Header Row */}
-          <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-8 sm:mb-10">
+          <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-10 sm:mb-12">
             <div className="max-w-2xl">
               <h2 className="text-2xl sm:text-3xl md:text-[36px] font-medium tracking-tight text-white leading-tight mb-3">
-                Deploy Next-Gen AI Shopping <br className="hidden sm:inline" />
-                Assistant Capabilities
+                Outbound Engagement & WhatsApp Marketing Automation
               </h2>
-              <p className="text-sm sm:text-base text-gray-100 font-[300] m-0">
-                Designed specifically to turn customer intent into completed checkouts.
+              <p className="text-sm sm:text-base text-gray-300 font-[300] m-0">
+                Reach shoppers with proactive, high-converting campaigns that
+                bring them back to checkout.
               </p>
             </div>
 
-            {/* Navigation Buttons — Centered on Mobile & Compact Size */}
+            {/* Navigation Buttons */}
             <div className="flex items-center gap-3 shrink-0 self-center md:self-auto">
-              {/* Back Button */}
               <button
                 onClick={handlePrev}
                 aria-label="Previous card"
-                className="w-9 h-9 sm:w-12 sm:h-12 rounded-full flex items-center justify-center transition-all active:scale-95 bg-white text-black hover:bg-gray-100 shadow-lg cursor-pointer"
+                className="w-10 h-10 sm:w-12 sm:h-12 rounded-full flex items-center justify-center transition-all active:scale-95 bg-white text-black hover:bg-gray-100 shadow-lg cursor-pointer"
               >
-                <ChevronLeft className="w-4 h-4 sm:w-5 sm:h-5 stroke-[2.5]" />
+                <ChevronLeft className="w-5 h-5 stroke-[2.5]" />
               </button>
 
-              {/* Next Button */}
               <button
                 onClick={handleNext}
                 aria-label="Next card"
-                className="w-9 h-9 sm:w-12 sm:h-12 rounded-full flex items-center justify-center transition-all active:scale-95 bg-white text-black hover:bg-gray-100 shadow-lg cursor-pointer"
+                className="w-10 h-10 sm:w-12 sm:h-12 rounded-full flex items-center justify-center transition-all active:scale-95 bg-white text-black hover:bg-gray-100 shadow-lg cursor-pointer"
               >
-                <ChevronRight className="w-4 h-4 sm:w-5 sm:h-5 stroke-[2.5]" />
+                <ChevronRight className="w-5 h-5 stroke-[2.5]" />
               </button>
             </div>
           </div>
@@ -178,25 +184,31 @@ export default function CapabilitiesCarousel() {
               animate={{ x: -currentIndex * stepWidth }}
               transition={{ type: "spring", stiffness: 200, damping: 26 }}
             >
-              {capabilities.map((item) => (
-                <div
-                  key={item.id}
-                  className="shrink-0 w-[82vw] sm:w-[340px] md:w-[360px] lg:w-[calc((100%-48px)/3.05)] bg-white text-gray-900 rounded-[1.8rem] p-4 sm:p-5 flex flex-col items-center text-center overflow-hidden select-none shadow-xl"
-                >
-                  {/* Top Image / Motion Graphic Container */}
-                  <div className="relative w-full aspect-[4/3] rounded-[1.4rem] bg-[#F4F4F5] overflow-hidden mb-5 flex items-center justify-center border border-gray-100/80">
-                    <Image
-                      src={item.mediaSrc}
-                      alt={item.title}
-                      fill
-                      sizes="(max-width: 640px) 80vw, (max-width: 1024px) 360px, 400px"
-                      className="object-cover pointer-events-none transition-transform duration-500 hover:scale-105"
-                    />
-                  </div>
+              {capabilities.map((item) => {
+                const IconComponent = item.icon;
+                return (
+                  <div
+                    key={item.id}
+                    className="shrink-0 w-[85vw] sm:w-[340px] md:w-[360px] lg:w-[calc((100%-48px)/3)] bg-white text-gray-900 rounded-[2rem] p-6 sm:p-8 flex flex-col items-center text-center select-none shadow-xl min-h-[300px] justify-start"
+                  >
+                    {/* Top Circular Orange Badge Logo/Icon Container */}
+                    <div className="w-14 h-14 sm:w-16 sm:h-16 rounded-full bg-[#FF5E2C] flex items-center justify-center text-white mb-6 shrink-0 shadow-md">
+                      {item.logoSrc ? (
+                        <div className="relative w-7 h-7">
+                          <Image
+                            src={item.logoSrc}
+                            alt={item.title}
+                            fill
+                            className="object-contain"
+                          />
+                        </div>
+                      ) : (
+                        IconComponent && <IconComponent className="w-7 h-7" strokeWidth={2} />
+                      )}
+                    </div>
 
-                  {/* Title & Description Container */}
-                  <div className="px-2 pb-3 flex flex-col items-center">
-                    <h3 className="text-base sm:text-lg font-bold tracking-tight text-gray-900 mb-2 leading-snug">
+                    {/* Title & Description */}
+                    <h3 className="text-base sm:text-lg font-bold tracking-tight text-gray-900 mb-3 leading-snug">
                       {item.title}
                     </h3>
 
@@ -204,13 +216,11 @@ export default function CapabilitiesCarousel() {
                       {item.description}
                     </p>
                   </div>
-                </div>
-              ))}
+                );
+              })}
             </motion.div>
           </div>
-
         </div>
-
       </div>
     </section>
   );

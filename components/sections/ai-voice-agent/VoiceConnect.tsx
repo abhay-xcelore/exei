@@ -5,17 +5,17 @@ import { motion } from 'framer-motion';
 
 // Mock data for integration logos. Replace with your actual logo assets.
 const leftColumnLogos = [
-  { id: 1, src: '/icons/ai-voice-agent/icon1.png', alt: 'Integration Logo 1' }, // Replace with actual paths
-  { id: 2, src: '/icons/ai-voice-agent/icon2.png', alt: 'Integration Logo 2' },
-  { id: 3, src: '/icons/ai-voice-agent/icon3.png', alt: 'Integration Logo 3' },
+  { id: 1, src: '/icons/instagram.png', alt: 'Instagram' }, // Replace with actual paths
+  { id: 2, src: '/icons/whatsapp (2).png', alt: 'whatsapp' },
+  { id: 3, src: '/icons/messanger (2).png', alt: 'messanger' },
   // ... more logos
 ];
 
 const rightColumnLogos = [
-  { id: 4, src: '/icons/ai-voice-agent/icon4.png', alt: 'Integration Logo 4' },
-  { id: 5, src: '/icons/ai-voice-agent/icon5.png', alt: 'Integration Logo 5' },
-  { id: 6, src: '/icons/ai-voice-agent/icon6.png', alt: 'Integration Logo 6' },
-  { id: 7, src: '/icons/ai-voice-agent/icon4.png', alt: 'Integration Logo 7' },
+  { id: 4, src: '/icons/web (2).png', alt: 'web' },
+  { id: 5, src: '/icons/phone (2).png', alt: 'Phone' },
+  { id: 6, src: '/icons/instagram.png', alt: 'Instagram' },
+  { id: 7, src: '/icons/shopify.png', alt: 'Shopify' },
   // ... more logos
 ];
 

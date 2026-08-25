@@ -3,7 +3,7 @@
 import React from "react";
 import Image from "next/image";
 import { motion, Variants } from "framer-motion";
-import { MessageSquareCheck, Quote } from "lucide-react";
+import { MessageSquareCheck } from "lucide-react";
 
 /* ==========================================================================
    ANIMATION VARIANTS
@@ -13,32 +13,20 @@ const containerVariants: Variants = {
   visible: {
     opacity: 1,
     transition: {
-      staggerChildren: 0.12,
+      staggerChildren: 0.1,
       delayChildren: 0.1,
     },
   },
 };
 
-const fadeInUp: Variants = {
-  hidden: { opacity: 0, y: 24 },
-  visible: {
-    opacity: 1,
-    y: 0,
-    transition: {
-      duration: 0.6,
-      ease: [0.22, 1, 0.36, 1],
-    },
-  },
-};
-
 const cardVariant: Variants = {
-  hidden: { opacity: 0, y: 30, scale: 0.98 },
+  hidden: { opacity: 0, y: 24, scale: 0.98 },
   visible: {
     opacity: 1,
     y: 0,
     scale: 1,
     transition: {
-      duration: 0.65,
+      duration: 0.6,
       ease: [0.22, 1, 0.36, 1],
     },
   },
@@ -49,23 +37,15 @@ const cardVariant: Variants = {
    ========================================================================== */
 export default function AiVoiceAgentSection() {
   return (
-    <section className="w-full bg-[#FBFBFC] py-10 sm:py-14 px-4 sm:px-6 lg:px-8 text-gray-900 font-[var(--font-poppins)]">
+    <section className="w-full bg-[#FBFBFC] py-14 sm:py-20 px-4 sm:px-6 lg:px-8 text-gray-900 font-[var(--font-poppins)]">
       <div className="max-w-7xl mx-auto">
+        
         {/* Section Heading */}
-        <motion.div
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, margin: "-60px" }}
-          variants={containerVariants}
-          className="text-center mb-10 sm:mb-14"
-        >
-          <motion.h2
-            variants={fadeInUp}
-            className="text-2xl sm:text-3xl md:text-[36px] font-medium tracking-tight text-gray-900 leading-tight"
-          >
+        <div className="text-center mb-10 sm:mb-14">
+          <h2 className="text-2xl sm:text-3xl md:text-[38px] font-semibold tracking-tight text-gray-900 leading-tight">
             AI Voice Agent Built For Everyday Ecommerce Operations
-          </motion.h2>
-        </motion.div>
+          </h2>
+        </div>
 
         {/* Bento Grid Container */}
         <motion.div
@@ -73,183 +53,220 @@ export default function AiVoiceAgentSection() {
           whileInView="visible"
           viewport={{ once: true, margin: "-60px" }}
           variants={containerVariants}
-          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5 auto-rows-[280px]"
+          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5 auto-rows-[270px]"
         >
-          {/* ----------------------------------------------------------------
-             CARD 1 (Tall Left Testimonial Card - Spans 2 Rows)
-             ---------------------------------------------------------------- */}
+          {/* =================================================================
+              CARD 1: Custom Voice Personas (Tall Left Card - Spans 2 Rows)
+              ================================================================= */}
           <motion.div
             variants={cardVariant}
-            className="lg:row-span-2 bg-white rounded-3xl p-6 sm:p-8 border border-gray-100/80 shadow-[0_4px_20px_rgba(0,0,0,0.03)] flex flex-col justify-between relative overflow-hidden h-full"
+            className="lg:row-span-2 bg-[radial-gradient(ellipse_at_top_left,_var(--tw-gradient-stops))] from-[#FFECE4] via-[#FFF8F5] to-white rounded-3xl p-6 sm:p-7 border border-gray-100 shadow-sm flex flex-col justify-between relative overflow-hidden h-full"
           >
-            {/* Top User Profile Header */}
-            <div className="flex items-center justify-between w-full">
-              <div className="flex items-center gap-3">
-                <div className="relative w-12 h-12 rounded-full overflow-hidden bg-amber-100 shrink-0">
-                  <Image
-                    src="/images/growth-agent/alexa.jpg"
-                    alt="William M"
-                    fill
-                    className="object-cover"
-                  />
+            {/* Top Graphic + Voice Badges Area */}
+            <div className="w-full flex flex-col items-center pt-2">
+              {/* Top Centered Sphere Graphic */}
+              <div className="relative w-44 h-44 sm:w-48 sm:h-48 flex items-center justify-center">
+                <Image
+                  src="/images/ai-voice-agent/card1.png"
+                  alt="AI Voice Sphere"
+                  width={190}
+                  height={190}
+                  className="object-contain drop-shadow-[0_12px_28px_rgba(255,94,44,0.35)]"
+                />
+              </div>
+
+              {/* Stacked Voice Selection Pills with Spacing */}
+              <div className="w-full max-w-[210px] space-y-3 mt-4">
+                {/* Male Voices Badge */}
+                <div className="bg-white/95 backdrop-blur-md border border-[#FFD9CD] rounded-full py-1.5 px-3 flex items-center gap-2.5 shadow-sm">
+                  <div className="flex -space-x-1.5 overflow-hidden">
+                    <Image
+                      src="/images/ai-voice-agent/u1.jpg"
+                      alt="Male Voice 1"
+                      width={22}
+                      height={22}
+                      className="inline-block h-5 w-5 rounded-full ring-2 ring-white object-cover"
+                    />
+                    <Image
+                      src="/images/ai-voice-agent/u2.png"
+                      alt="Male Voice 2"
+                      width={22}
+                      height={22}
+                      className="inline-block h-5 w-5 rounded-full ring-2 ring-white object-cover"
+                    />
+                    <Image
+                      src="/images/ai-voice-agent/u3.png"
+                      alt="Male Voice 3"
+                      width={22}
+                      height={22}
+                      className="inline-block h-5 w-5 rounded-full ring-2 ring-white object-cover"
+                    />
+                  </div>
+                  <span className="text-xs font-semibold text-gray-800">
+                    Male Voices
+                  </span>
                 </div>
-                <div>
-                  <h4 className="text-sm font-bold text-gray-900 leading-tight">
-                    William M
-                  </h4>
-                  <p className="text-xs text-gray-400 font-medium">
-                    CEO of NovaTech
-                  </p>
+
+                {/* Female Voices Badge */}
+                <div className="bg-white/95 backdrop-blur-md border border-[#FFD9CD] rounded-full py-1.5 px-3 flex items-center gap-2.5 shadow-sm">
+                  <div className="flex -space-x-1.5 overflow-hidden">
+                    <Image
+                      src="/images/ai-voice-agent/u4.png"
+                      alt="Female Voice 1"
+                      width={22}
+                      height={22}
+                      className="inline-block h-5 w-5 rounded-full ring-2 ring-white object-cover"
+                    />
+                    <Image
+                      src="/images/ai-voice-agent/u5.png"
+                      alt="Female Voice 2"
+                      width={22}
+                      height={22}
+                      className="inline-block h-5 w-5 rounded-full ring-2 ring-white object-cover"
+                    />
+                    <Image
+                      src="/images/ai-voice-agent/u6.png"
+                      alt="Female Voice 3"
+                      width={22}
+                      height={22}
+                      className="inline-block h-5 w-5 rounded-full ring-2 ring-white object-cover"
+                    />
+                  </div>
+                  <span className="text-xs font-semibold text-gray-800">
+                    Female Voices
+                  </span>
                 </div>
               </div>
-              <Quote className="w-9 h-9 text-gray-200 fill-gray-100 rotate-180 shrink-0" />
             </div>
 
-            {/* Testimonial Content */}
-            <div className="my-auto pt-6 space-y-4">
-              <h3 className="text-lg sm:text-xl font-bold text-gray-900 leading-snug tracking-tight">
-                “Using this platform has completely changed way”
+            {/* Bottom Card Copy */}
+            <div className="pt-4">
+              <h3 className="text-lg font-bold text-gray-900 leading-snug">
+                Custom Voice Personas
               </h3>
-              <p className="text-xs sm:text-sm text-gray-500 font-normal leading-relaxed">
-                I handle my business payments. Everything is fast, secure, and
-                easy to manage. Using this platform has completely changed the
-                way I handle my business payments. Everything is fast, secure, and
-                easy.
+              <p className="text-xs text-gray-500 font-normal leading-relaxed mt-1.5">
+                Choose natural male or female voices that match your brand tone.
               </p>
             </div>
           </motion.div>
 
-          {/* ----------------------------------------------------------------
-             CARD 2 (Center Image Showcase Card with Overlay)
-             ---------------------------------------------------------------- */}
+          {/* =================================================================
+              CARD 2: Support Indian Native Languages (Image Card)
+              ================================================================= */}
           <motion.div
             variants={cardVariant}
-            className="relative rounded-3xl overflow-hidden shadow-[0_4px_20px_rgba(0,0,0,0.03)] border border-gray-100/80 group h-full"
+            className="relative rounded-3xl overflow-hidden shadow-sm border border-gray-100 group h-full"
           >
             <Image
-              src="/images/customer-service/conversation.png"
-              alt="Instant Answers & Sales"
+              src="/images/ai-voice-agent/card2.jpg"
+              alt="Support Indian Native Languages"
               fill
               className="object-cover transition-transform duration-500 group-hover:scale-105"
             />
-            {/* Glassmorphic Overlay Badge */}
-            <div className="absolute bottom-4 left-4 right-4 bg-black/40 backdrop-blur-md rounded-2xl p-3.5 border border-white/20 text-white z-10">
+            {/* Frosted Dark Glass Badge Container with Orange Border */}
+            <div className="absolute bottom-3 left-3 right-3 bg-black/45 backdrop-blur-md rounded-2xl p-3.5 border border-[#FF5E2C]/40 ring-1 ring-[#FF5E2C]/20 text-white z-10">
               <h4 className="text-xs sm:text-sm font-bold leading-tight">
-                Instant Answers & Sales
+                Support Indian Native Languages
               </h4>
-              <p className="text-[11px] text-gray-200 font-normal mt-0.5">
-                Get Faster replies, more completed checkouts.
+              <p className="text-[11px] text-gray-200 font-normal mt-1 leading-snug">
+                Speak with your customers in their preferred regional languages for natural communication.
               </p>
             </div>
           </motion.div>
 
-          {/* ----------------------------------------------------------------
-             CARD 3 (Stat: 60% Cost Reduction)
-             ---------------------------------------------------------------- */}
+          {/* =================================================================
+              CARD 3: Stat (80% Routine Queries Handled)
+              ================================================================= */}
           <motion.div
             variants={cardVariant}
-            className="bg-white rounded-3xl p-6 border border-gray-100/80 shadow-[0_4px_20px_rgba(0,0,0,0.03)] flex flex-col justify-between h-full"
+            className="bg-white rounded-3xl p-6 border border-gray-100 shadow-sm flex flex-col justify-between h-full"
           >
-            {/* Orange Icon Circle */}
+            {/* Checkmark Circle Icon */}
             <div className="w-10 h-10 rounded-full border border-orange-200 bg-orange-50/50 flex items-center justify-center text-[#FF5E2C]">
               <MessageSquareCheck className="w-5 h-5 stroke-[1.8]" />
             </div>
 
-            {/* Stat & Label */}
+            {/* Metric Display */}
             <div>
-              <div className="text-3xl sm:text-4xl font-extrabold text-gray-900 tracking-tight mb-1">
-                60<span className="text-[#FF5E2C]">%</span>
+              <div className="text-4xl sm:text-5xl font-extrabold text-gray-900 tracking-tight mb-1">
+                80<span className="text-[#FF5E2C]">%</span>
               </div>
-              <p className="text-xs sm:text-sm font-semibold text-gray-600 leading-tight">
-                Cost Reduction in <br />
-                Customer Support
+              <p className="text-xs sm:text-sm font-semibold text-gray-700 leading-snug">
+                Routine queries Handled.
               </p>
             </div>
           </motion.div>
 
-          {/* ----------------------------------------------------------------
-             CARD 4 (Stat: 2x Faster Resolution)
-             ---------------------------------------------------------------- */}
+          {/* =================================================================
+              CARD 4: Stat (3x Win Back Rate)
+              ================================================================= */}
           <motion.div
             variants={cardVariant}
-            className="bg-white rounded-3xl p-6 border border-gray-100/80 shadow-[0_4px_20px_rgba(0,0,0,0.03)] flex flex-col justify-between h-full"
+            className="bg-white rounded-3xl p-6 border border-gray-100 shadow-sm flex flex-col justify-between h-full"
           >
-            {/* Orange Icon Circle */}
+            {/* Checkmark Circle Icon */}
             <div className="w-10 h-10 rounded-full border border-orange-200 bg-orange-50/50 flex items-center justify-center text-[#FF5E2C]">
               <MessageSquareCheck className="w-5 h-5 stroke-[1.8]" />
             </div>
 
-            {/* Stat & Label */}
+            {/* Metric Display */}
             <div>
-              <div className="text-3xl sm:text-4xl font-extrabold text-gray-900 tracking-tight mb-1">
+              <div className="text-4xl sm:text-5xl font-extrabold text-gray-900 tracking-tight mb-1">
+                3<span className="text-[#FF5E2C]">x</span>
+              </div>
+              <p className="text-xs sm:text-sm font-semibold text-gray-700 leading-snug">
+                Win back Rate.
+              </p>
+            </div>
+          </motion.div>
+
+          {/* =================================================================
+              CARD 5: Stat (2x More Customer Conversations)
+              ================================================================= */}
+          <motion.div
+            variants={cardVariant}
+            className="bg-white rounded-3xl p-6 border border-gray-100 shadow-sm flex flex-col justify-between h-full"
+          >
+            {/* Checkmark Circle Icon */}
+            <div className="w-10 h-10 rounded-full border border-orange-200 bg-orange-50/50 flex items-center justify-center text-[#FF5E2C]">
+              <MessageSquareCheck className="w-5 h-5 stroke-[1.8]" />
+            </div>
+
+            {/* Metric Display */}
+            <div>
+              <div className="text-4xl sm:text-5xl font-extrabold text-gray-900 tracking-tight mb-1">
                 2<span className="text-[#FF5E2C]">x</span>
               </div>
-              <p className="text-xs sm:text-sm font-semibold text-gray-600 leading-tight">
-                Faster Resolution Time
+              <p className="text-xs sm:text-sm font-semibold text-gray-700 leading-snug">
+                more Customer conversations.
               </p>
             </div>
           </motion.div>
 
-          {/* ----------------------------------------------------------------
-             CARD 5 (Stat: 5000+ Queries Resolved)
-             ---------------------------------------------------------------- */}
+          {/* =================================================================
+              CARD 6: Smart Automatic Re-dial (Wide Bottom Image - Spans 2 Columns)
+              ================================================================= */}
           <motion.div
             variants={cardVariant}
-            className="bg-white rounded-3xl p-6 border border-gray-100/80 shadow-[0_4px_20px_rgba(0,0,0,0.03)] flex flex-col justify-between h-full"
+            className="lg:col-span-2 relative rounded-3xl overflow-hidden shadow-sm border border-gray-100 group h-full"
           >
-            {/* Orange Icon Circle */}
-            <div className="w-10 h-10 rounded-full border border-orange-200 bg-orange-50/50 flex items-center justify-center text-[#FF5E2C]">
-              <MessageSquareCheck className="w-5 h-5 stroke-[1.8]" />
-            </div>
-
-            {/* Stat & Label */}
-            <div>
-              <div className="text-3xl sm:text-4xl font-extrabold text-gray-900 tracking-tight mb-1">
-                5000<span className="text-[#FF5E2C]">+</span>
-              </div>
-              <p className="text-xs sm:text-sm font-semibold text-gray-600 leading-tight">
-                Queries Resolved
+            <Image
+              src="/images/ai-voice-agent/card6.png"
+              alt="Smart Automatic Re-dial"
+              fill
+              className="object-cover object-top transition-transform duration-500 group-hover:scale-105"
+            />
+            {/* Frosted Dark Glass Badge Container with Orange Border */}
+            <div className="absolute bottom-3 left-3 right-3 bg-black/45 backdrop-blur-md rounded-2xl p-4 border border-[#FF5E2C]/40 ring-1 ring-[#FF5E2C]/20 text-white z-10">
+              <h4 className="text-sm sm:text-base font-bold leading-tight">
+                Smart Automatic Re-dial
+              </h4>
+              <p className="text-xs text-gray-200 font-normal mt-1 leading-snug">
+                Automatically retry unanswered or dropped calls at optimal times.
               </p>
             </div>
           </motion.div>
 
-          {/* ----------------------------------------------------------------
-             CARD 6 (Dark Bottom Testimonial Card - Spans 2 Columns)
-             ---------------------------------------------------------------- */}
-          <motion.div
-            variants={cardVariant}
-            className="lg:col-span-2 bg-black rounded-3xl p-6 sm:p-8 text-white border border-gray-900 flex flex-col justify-between relative overflow-hidden h-full"
-          >
-            {/* Quote Header */}
-            <p className="text-sm sm:text-base md:text-lg font-medium leading-relaxed text-gray-100 pr-4">
-              “I started with the free plan and quickly upgraded. The investment
-              tools are clear, easy to understand, and actually helped me make
-              smarter decisions.”
-            </p>
-
-            {/* User Profile & Quote Icon Footer */}
-            <div className="flex items-end justify-between w-full pt-4">
-              <div className="flex items-center gap-3">
-                <div className="relative w-11 h-11 rounded-full overflow-hidden bg-teal-800 shrink-0 border border-teal-500/30">
-                  <Image
-                    src="/images/growth-agent/alexa.jpg"
-                    alt="James R"
-                    fill
-                    className="object-cover"
-                  />
-                </div>
-                <div>
-                  <h4 className="text-sm font-bold text-white leading-tight">
-                    James R
-                  </h4>
-                  <p className="text-xs text-gray-400 font-medium mt-0.5">
-                    Business Owner
-                  </p>
-                </div>
-              </div>
-              <Quote className="w-10 h-10 text-zinc-800 fill-zinc-800 rotate-180 shrink-0" />
-            </div>
-          </motion.div>
         </motion.div>
       </div>
     </section>
